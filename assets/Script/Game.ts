@@ -10,7 +10,8 @@ export default class Game extends cc.Component {
     label1: cc.SpriteFrame = null;
     @property(cc.SpriteFrame)
     label2: cc.SpriteFrame = null;
-
+    @property(cc.TiledMap)
+    map: cc.TiledMap = null;
 
     @property
     text: string = 'hello';
@@ -42,6 +43,20 @@ export default class Game extends cc.Component {
     {
         await CharactorManager.init()
         CharactorManager.create("kulou")
+
+        let layer = this.map.getLayer("块层 2")
+        let size = layer.getLayerSize()
+        for(let i = 0; i < size.width; i++)
+        {
+            for(let j = 0; j < size.height; j++)
+            {
+                let gid = layer.getTileGIDAt(i, j)
+                if(gid == 139)
+                {
+                    layer.setTileGID(0, i, j, 1)
+                }
+            }
+        }
     }
 
 
