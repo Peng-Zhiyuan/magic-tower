@@ -2,9 +2,6 @@
 <map version="1.0" tiledversion="2018.06.01" orientation="orthogonal" renderorder="right-down" width="10" height="15" tilewidth="32" tileheight="32" infinite="0" nextlayerid="3" nextobjectid="1">
  <tileset firstgid="1" source="Tile.tsx"/>
  <layer id="1" name="块层 1" width="10" height="15">
-  <properties>
-   <property name="test" value="a"/>
-  </properties>
   <data encoding="csv">
 69,69,69,69,69,69,69,69,69,69,
 69,69,69,69,69,69,69,69,69,69,
@@ -35,7 +32,7 @@
 0,68,0,68,0,68,0,68,0,0,
 0,68,0,68,0,68,0,68,0,0,
 0,68,0,68,0,68,0,68,0,0,
-0,68,0,68,0,68,0,68,0,0,
+126,68,0,68,0,68,0,68,0,0,
 0,68,0,68,0,68,0,68,0,0,
 0,68,0,68,0,68,0,68,0,0,
 0,68,0,68,0,68,0,68,0,0,

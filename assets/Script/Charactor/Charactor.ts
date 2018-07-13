@@ -4,7 +4,7 @@ const {ccclass, property} = cc._decorator;
 export default class Charactor extends cc.Component 
 {
     @property(cc.Sprite)
-    sprite: cc.Sprite
+    sprite: cc.Sprite = null
 
     sprtieFrameList: cc.SpriteFrame[]
     frameInterval: number = 0.25

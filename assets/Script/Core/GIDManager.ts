@@ -1,25 +1,34 @@
+import StaticData from "../StaticData/StaticData";
+import GIDParseInfo from "./GIDParseInfo";
+import { ObjType } from "./ObjType";
+
 export default class GIDManager
 {
-    static gidToObjectName = {}
+    static gidToObjectName: {[gid: string]: GIDParseInfo} = {}
 
-    static init(): Promise<void>
+    static init()
     {
-        return new Promise<void>((resolve, reject) =>{
-            cc.loader.loadRes("map/meta", (error, meta) => {
-                for(let key in meta)
-                {
-                    let value = meta[key]
-                    this.gidToObjectName[value] = key
-                }
-                console.log(this.gidToObjectName)
-                resolve()
-            })
-            
-        })
+        // read player gid
+        let player_gid = StaticData.getCell("base", "player_gid", "value")
+        this.gidToObjectName[player_gid] = new GIDParseInfo(player_gid, ObjType.Player, "player")
+
+        // read monster gid
+        let sheet = StaticData.getSheet("monster")
+        for(let id in sheet)
+        {
+            let row = sheet[id]
+            let gid = row["gid"]
+            this.gidToObjectName[gid] = new GIDParseInfo(gid, ObjType.Monster, id)
+        }
     }
 
-    static GIDToObjectName(gid: number)
+    static GIDToParseInfo(gid: number): GIDParseInfo
     {
         return this.gidToObjectName[gid]
+    }
+
+    static print()
+    {
+        console.log(this.gidToObjectName)
     }
 }
