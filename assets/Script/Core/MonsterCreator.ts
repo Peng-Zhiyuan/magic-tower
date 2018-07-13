@@ -6,7 +6,7 @@ export default class MonsterCreator
     static prefab_monster: cc.Node
 
     // 加载必要预设
-    static init(): Promise<void>
+    static initAsync(): Promise<void>
     {
         return new Promise<void>((resolve, reject)=>{
             let prefab_cha = cc.loader.loadRes("monster", (error, prefab_cha: cc.Node)=>{

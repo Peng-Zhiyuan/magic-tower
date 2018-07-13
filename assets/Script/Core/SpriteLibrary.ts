@@ -2,7 +2,7 @@ export default class SpriteLibrary
 {
     static mapping:{[name: string]: cc.SpriteFrame} = {}
 
-    static init(): Promise<void>
+    static initAsync(): Promise<void>
     {
         return new Promise<void>((resolve, reject) =>{
             cc.loader.loadResDir("sprite-library", (error, resList, pathList)=>{
@@ -13,7 +13,6 @@ export default class SpriteLibrary
                         let res = resList[i]
                         this.mapping[res.name] = res
                     }
-                    console.log(this.mapping)
                     resolve()
                 }
                 else

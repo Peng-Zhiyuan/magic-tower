@@ -1,11 +1,13 @@
 import ResUtil from "./ResUtil";
 import GIDManager from "./GIDManager";
-import MapStatus from "./Board";
+import Board from "./Board";
 import GIDParseInfo from "./GIDParseInfo";
 import { ObjType } from "./ObjType";
 import MonsterCreator from "./MonsterCreator";
 import StaticData from "../StaticData/StaticData";
 import SpriteLibrary from "./SpriteLibrary";
+import MapObject from "./MapObject";
+import Token from "./Token";
 
 export default class MapManager
 {
@@ -17,7 +19,7 @@ export default class MapManager
         this.map = cc.find("map").getComponent(cc.TiledMap)
     }
 
-    static async load(mapPath: string)
+    static async loadAsync(mapPath: string)
     {
         // set map component
         let mapAsset = await ResUtil.loadRes<cc.TiledMapAsset>("map/map1")
@@ -39,13 +41,18 @@ export default class MapManager
         }
 
         // set board data
-        let count = this.map.getMapSize()
-        let mapCountX = count.width
-        let mapCountY = count.height
-        MapStatus.newData(mapCountX, mapCountY)
+
+        Board.clean()
+        for(let index in layerList)
+        {
+            let layer = layerList[index]
+            let name = layer.name
+            let size = layer.getLayerSize()
+            Board.newLayer(name, size.width, size.height)
+        }
 
         // parse object of each layer
-        this.parseObject()
+        await this.parseObjectAsync()
     }
 
     private static addObj(layer: cc.TiledLayer, indexX: number, indexY: number, obj: cc.Node)
@@ -57,7 +64,7 @@ export default class MapManager
         obj.position = pos
     }
 
-    private static async parseObject()
+    private static async parseObjectAsync()
     {
         let layerList = this.map.allLayers()
         for(let layer of layerList)
@@ -73,20 +80,26 @@ export default class MapManager
                     {
                         console.log("(" + i + ", " + j + ") parse to " + parseInfo.objType + ": " + parseInfo.objName)
                         layer.setTileGID(0, i, j)
-                        this.createObjByParseInfo(layer, i, j, parseInfo)
+                        let obj = await this.createObjByParseInfoAsync(layer, i, j, parseInfo)
+                        obj.generateToken(parseInfo.objName, )
+                        Board.set(layer.name, i, j, obj.token)
                     }
                 }
             }
         }
     }
 
-    private static async createObjByParseInfo(layer: cc.TiledLayer, indexX: number, indexY: number, parseInfo: GIDParseInfo)
+    private static async createObjByParseInfoAsync(layer: cc.TiledLayer, indexX: number, indexY: number, parseInfo: GIDParseInfo): Promise<MapObject>
     {
         if(parseInfo.objType == ObjType.Player)
         {
             let prefab = await ResUtil.loadRes<cc.Node>("player")
             let instance = cc.instantiate(prefab)
             this.addObj(layer, indexX, indexY, instance)
+            let obj = instance.getComponent(MapObject)
+            obj.type = ObjType.Player
+            obj.layer = layer
+            return obj
         }
         else if(parseInfo.objType == ObjType.Monster)
         {
@@ -102,6 +115,9 @@ export default class MapManager
             }
             monster.init(spriteList)
             this.addObj(layer, indexX, indexY, monster.node)
+            monster.type = ObjType.Monster
+            monster.layer = layer
+            return monster
         }
     }
 }

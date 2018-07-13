@@ -1,7 +1,9 @@
+import MapObject from "../Core/MapObject";
+
 const {ccclass, property} = cc._decorator;
 
 @ccclass
-export default class Charactor extends cc.Component 
+export default class Charactor extends MapObject
 {
     @property(cc.Sprite)
     sprite: cc.Sprite = null

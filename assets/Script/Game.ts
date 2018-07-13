@@ -5,6 +5,7 @@ import ResUtil from "./Core/ResUtil";
 import MapManager from "./Core/MapManager";
 import StaticData from "./StaticData/StaticData";
 import SpriteLibrary from "./Core/SpriteLibrary";
+import Board from "./Core/Board";
 
 const {ccclass, property} = cc._decorator;
 
@@ -33,14 +34,15 @@ export default class Game extends cc.Component {
     async init()
     {
         cc.view.enableAntiAlias(false);
-        await StaticData.init()
-        await SpriteLibrary.init()
-        await MonsterCreator.init()
+        await StaticData.initAsync()
+        await SpriteLibrary.initAsync()
+        await MonsterCreator.initAsync()
         GIDManager.init()
         //CharactorManager.create("kulou")
         MapManager.init()
-        MapManager.load("map/map1")
-        GIDManager.print()
+        await MapManager.loadAsync("map/map1")
+
+        Board.print()
     }
 
    

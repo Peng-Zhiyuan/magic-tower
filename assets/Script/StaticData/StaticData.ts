@@ -2,7 +2,7 @@ export default class StaticData
 {
     private static data
 
-    static init(): Promise<void>
+    static initAsync(): Promise<void>
     {
         return new Promise<void>((resolve, reject)=>{
             cc.loader.loadRes("static-data/StaticData", (error, res)=>{

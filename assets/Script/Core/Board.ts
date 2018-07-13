@@ -1,29 +1,39 @@
-import CellInfo from "./CellInfo";
+import Token from "./Token";
+import BoardLayer from "./BoardLayer";
 
-export default class MapStatus
+export default class Board
 {
-    static data: CellInfo[][];
+    static layerMapping: {[name: string]: BoardLayer} = {}
 
-    static newData(width: number, height: number)
+    static clean()
     {
-        this.data = []
-        for(let i = 0; i < width; i++)
+        this.layerMapping = {}
+    }
+
+    static newLayer(name: string, width: number, height: number)
+    {
+        let layer = new BoardLayer(name, width, height)
+        this.layerMapping[name] = layer
+    }
+
+    static set(layerName: string, indexX: number, indexY: number, token: Token)
+    {
+        let layer = this.layerMapping[layerName]
+        layer.set(indexX, indexY, token)
+    }
+
+    static get(layerName: string, indexX: number, indexY: number): Token
+    {
+        let layer = this.layerMapping[layerName]
+        return layer.getToken(indexX, indexY)
+    }
+
+    static print()
+    {
+        for(let name in this.layerMapping)
         {
-            this.data[i] = []
-            for(let j = 0; j < height; j++)
-            {
-                this.data[i][j] = new CellInfo()
-            }
+            let layer = this.layerMapping[name]
+            layer.print()
         }
-    }
-
-    static set(indexX: number, indexY: number, objName: string)
-    {
-        this[indexX][indexY].obj = objName
-    }
-
-    static get(indexX: number, indexY: number): CellInfo
-    {
-        return this.data[indexX][indexY]
     }
 }
