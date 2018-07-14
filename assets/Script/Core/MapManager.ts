@@ -1,5 +1,5 @@
 import ResUtil from "./ResUtil";
-import GIDManager from "./GIDManager";
+import ObjectCreator from "./ObjectCreator";
 import Board from "./Board";
 import GIDParseInfo from "./GIDParseInfo";
 import { ObjType } from "./ObjType";
@@ -75,13 +75,13 @@ export default class MapManager
                 for(let j = 0; j < size.height; j++)
                 {
                     let gid = layer.getTileGIDAt(i, j)
-                    let parseInfo = GIDManager.GIDToParseInfo(gid)
+                    let parseInfo = ObjectCreator.GIDToParseInfo(gid)
                     if(parseInfo != null)
                     {
                         console.log("(" + i + ", " + j + ") parse to " + parseInfo.objType + ": " + parseInfo.objName)
                         layer.setTileGID(0, i, j)
-                        let obj = await this.createObjByParseInfoAsync(layer, i, j, parseInfo)
-                        obj.generateToken(parseInfo.objName, )
+                        let obj = this.createObjByParseInfo(layer, i, j, parseInfo)
+                        obj.generateToken(parseInfo.objName)
                         Board.set(layer.name, i, j, obj.token)
                     }
                 }
@@ -89,35 +89,11 @@ export default class MapManager
         }
     }
 
-    private static async createObjByParseInfoAsync(layer: cc.TiledLayer, indexX: number, indexY: number, parseInfo: GIDParseInfo): Promise<MapObject>
+    private static createObjByParseInfo(layer: cc.TiledLayer, indexX: number, indexY: number, parseInfo: GIDParseInfo): MapObject
     {
-        if(parseInfo.objType == ObjType.Player)
-        {
-            let prefab = await ResUtil.loadRes<cc.Node>("player")
-            let instance = cc.instantiate(prefab)
-            this.addObj(layer, indexX, indexY, instance)
-            let obj = instance.getComponent(MapObject)
-            obj.type = ObjType.Player
-            obj.layer = layer
-            return obj
-        }
-        else if(parseInfo.objType == ObjType.Monster)
-        {
-            let name = parseInfo.objName
-            let monster = MonsterCreator.create(name)
-            let spriteListDefine = StaticData.getCell("monster", name, "sprites") as string
-            let parts = spriteListDefine.split(",")
-            let spriteList: cc.SpriteFrame[] = []
-            for(let p of parts)
-            {
-                let sprite = SpriteLibrary.get(p)
-                spriteList.push(sprite)
-            }
-            monster.init(spriteList)
-            this.addObj(layer, indexX, indexY, monster.node)
-            monster.type = ObjType.Monster
-            monster.layer = layer
-            return monster
-        }
+        let obj = ObjectCreator.createByParseInfo(parseInfo)
+        this.addObj(layer, indexX, indexY, obj.node)
+        obj.layer = layer
+        return obj
     }
 }

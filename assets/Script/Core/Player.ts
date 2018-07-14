@@ -1,6 +1,8 @@
 import Board from "./Board";
 import MapObject from "./MapObject";
 import { ObjType } from "./ObjType";
+import StaticData from "../StaticData/StaticData";
+import { Sheet } from "./Sheet";
 
 const {ccclass, property} = cc._decorator;
 
@@ -73,9 +75,22 @@ export default class Player extends MapObject
                 // battle
                 console.log("BATTLE!")
             }
-            else
+            else if(obj.type == ObjType.Specail)
             {
                 // TODO: ...
+                let row = StaticData.getRow(Sheet.Specail, obj.objName)
+                if(row["block"])
+                {
+                    console.log("block")
+                }
+                else
+                {
+                    // move data
+                    this.token.cell.layer.pickAndSet(targetX, targetY, this.token)
+                    // move node
+                    let pos = this.layer.getPositionAt(targetX, targetY)
+                    this.node.setPosition(pos)
+                }
             }
         }
         else

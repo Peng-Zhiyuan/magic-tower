@@ -6,6 +6,7 @@ const {ccclass, property} = cc._decorator;
 @ccclass
 export default class MapObject extends cc.Component 
 {
+    objName: string
     token: Token
     type: ObjType
     layer: cc.TiledLayer

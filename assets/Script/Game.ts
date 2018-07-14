@@ -1,6 +1,6 @@
 import Charactor from "./Charactor/Charactor";
 import MonsterCreator from "./Core/MonsterCreator";
-import GIDManager from "./Core/GIDManager";
+import ObjectCreator from "./Core/ObjectCreator";
 import ResUtil from "./Core/ResUtil";
 import MapManager from "./Core/MapManager";
 import StaticData from "./StaticData/StaticData";
@@ -36,8 +36,8 @@ export default class Game extends cc.Component {
         cc.view.enableAntiAlias(false);
         await StaticData.initAsync()
         await SpriteLibrary.initAsync()
-        await MonsterCreator.initAsync()
-        GIDManager.init()
+        //await MonsterCreator.initAsync()
+        await ObjectCreator.initAsync()
         //CharactorManager.create("kulou")
         MapManager.init()
         await MapManager.loadAsync("map/map1")
