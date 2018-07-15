@@ -6,6 +6,7 @@ import { Sheet } from "./Sheet";
 import GameMaster from "../GM/GameMaster";
 import Monster from "./Monster";
 import ScriptManager from "../Scripting/ScriptManager";
+import Npc from "./Npc";
 
 const {ccclass, property} = cc._decorator;
 
@@ -101,7 +102,7 @@ export default class Player extends MapObject
                 let script = obj.property["s"]
                 if(script != null)
                 {
-                    ScriptManager.run(script)
+                    ScriptManager.run(obj as any as Npc, script)
                 }
                 else
                 {

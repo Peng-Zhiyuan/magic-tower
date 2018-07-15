@@ -1,12 +1,16 @@
 import Script from "./Script";
+import Npc from "../Core/Npc";
 
 const {ccclass, property} = cc._decorator;
 
 @ccclass
 export default class ScriptManager 
 {
-    static async run(name: string): Promise<void>
+    static npc: Npc
+
+    static async run(npc: Npc, name: string): Promise<void>
     {
+        this.npc = npc
         let fun = Script[name]
         if(fun == null)
         {

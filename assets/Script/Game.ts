@@ -6,6 +6,7 @@ import MapManager from "./Core/MapManager";
 import StaticData from "./StaticData/StaticData";
 import SpriteLibrary from "./Core/SpriteLibrary";
 import Board from "./Core/Board";
+import SL from "./GM/SL";
 
 const {ccclass, property} = cc._decorator;
 
@@ -41,7 +42,7 @@ export default class Game extends cc.Component {
         //CharactorManager.create("kulou")
         MapManager.init()
         await MapManager.loadAsync("map/map1")
-
+        await SL.initAsync()
         Board.print()
     }
 
