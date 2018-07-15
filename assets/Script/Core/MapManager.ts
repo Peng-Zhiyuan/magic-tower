@@ -41,12 +41,11 @@ export default class MapManager
         }
 
         // set board data
-
         Board.clean()
         for(let index in layerList)
         {
             let layer = layerList[index]
-            let name = layer.name
+            let name = layer.getLayerName()
             let size = layer.getLayerSize()
             Board.newLayer(name, size.width, size.height)
         }
@@ -82,9 +81,32 @@ export default class MapManager
                         layer.setTileGID(0, i, j)
                         let obj = this.createObjByParseInfo(layer, i, j, parseInfo)
                         obj.generateToken(parseInfo.objName)
-                        Board.set(layer.name, i, j, obj.token)
+                        let layerName = layer.getLayerName()
+                        Board.set(layerName, i, j, obj.token)
                     }
                 }
+            }
+        }
+        let objectGroup = this.map.getObjectGroup("对象层 1")
+        let objList = objectGroup.getObjects()
+        let cellWidth = this.map.getTileSize().width
+        let cellHeight = this.map.getTileSize().height
+        for(let obj of objList)
+        {
+            let x = obj.offset["x"]
+            let y = obj.offset["y"]
+            let indexX = Math.floor(x / cellWidth)
+            let indexY = Math.floor(y / cellHeight)
+            let token = Board.get("块层 2", indexX, indexY)
+            if(token != null)
+            {
+                let property = obj["_properties"]
+                token.obj.property = property
+                console.log("attach " + JSON.stringify(property) + " to " + token.obj.objName)
+            }
+            else
+            {
+                console.warn("tile object info not font a map object to attach: (" + indexX + ", " + indexY + ")")
             }
         }
     }

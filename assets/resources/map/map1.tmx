@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.0" tiledversion="2018.06.01" orientation="orthogonal" renderorder="right-down" width="10" height="15" tilewidth="32" tileheight="32" infinite="0" nextlayerid="3" nextobjectid="1">
+<map version="1.0" tiledversion="1.1.5" orientation="orthogonal" renderorder="right-down" width="10" height="15" tilewidth="32" tileheight="32" infinite="0" nextobjectid="44">
  <tileset firstgid="1" source="Tile.tsx"/>
- <layer id="1" name="块层 1" width="10" height="15">
+ <layer name="块层 1" width="10" height="15">
   <data encoding="csv">
 69,69,69,69,69,69,69,69,69,69,
 69,69,69,69,69,69,69,69,69,69,
@@ -20,23 +20,49 @@
 69,69,69,69,69,69,69,69,69,69
 </data>
  </layer>
- <layer id="2" name="块层 2" width="10" height="15">
+ <layer name="块层 2" width="10" height="15">
   <data encoding="csv">
-0,0,0,68,0,0,0,68,0,0,
-0,68,0,68,0,68,0,68,0,0,
-0,68,0,68,0,68,0,68,0,0,
-0,68,0,68,0,68,0,68,0,0,
-0,68,0,68,0,68,0,68,0,0,
-0,68,0,68,0,68,0,68,0,0,
-0,68,0,68,0,68,0,68,0,0,
-0,68,0,68,0,68,0,68,0,0,
-0,68,0,68,0,68,0,68,0,0,
-0,68,0,68,0,68,0,68,0,0,
-126,68,0,68,0,68,0,68,0,0,
-0,68,0,68,0,68,0,68,0,0,
-0,68,0,68,0,68,0,68,0,0,
-0,68,0,68,0,68,0,68,0,0,
-139,68,0,0,0,68,0,0,0,0
+50,50,50,50,172,56,50,50,50,50,
+50,50,50,50,0,172,50,50,50,50,
+50,50,50,50,0,172,50,50,50,50,
+50,50,50,50,0,172,50,50,50,50,
+50,50,50,50,0,172,50,50,50,50,
+50,50,50,50,0,172,50,50,50,50,
+68,68,68,68,54,54,68,68,68,68,
+172,172,172,172,0,172,0,172,172,172,
+172,172,172,0,0,172,0,172,172,172,
+172,68,68,0,0,172,0,68,68,172,
+172,68,162,172,0,172,0,162,68,172,
+172,68,68,172,0,172,172,68,68,172,
+172,68,162,172,0,172,172,162,68,172,
+172,68,68,172,0,172,172,68,68,172,
+172,172,172,172,139,172,172,172,172,172
 </data>
  </layer>
+ <objectgroup name="对象层 1">
+  <object id="39" x="79" y="335">
+   <properties>
+    <property name="s" value="hello"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="40" x="238.5" y="332">
+   <properties>
+    <property name="nid" value="entrace_2"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="41" x="79.5" y="398.5">
+   <properties>
+    <property name="nid" value="entrace_3"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="42" x="243" y="399.5">
+   <properties>
+    <property name="nid" value="entrace_4"/>
+   </properties>
+   <point/>
+  </object>
+ </objectgroup>
 </map>

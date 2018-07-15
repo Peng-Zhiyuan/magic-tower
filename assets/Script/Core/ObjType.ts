@@ -4,4 +4,5 @@ export enum ObjType
     Monster,
     Item,
     Specail,
+    Npc,
 }

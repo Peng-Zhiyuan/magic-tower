@@ -1,4 +1,4 @@
-import Charactor from "./Charactor/Charactor";
+import Monster from "./Core/Monster";
 import MonsterCreator from "./Core/MonsterCreator";
 import ObjectCreator from "./Core/ObjectCreator";
 import ResUtil from "./Core/ResUtil";

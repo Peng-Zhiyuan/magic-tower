@@ -10,6 +10,7 @@ export default class MapObject extends cc.Component
     token: Token
     type: ObjType
     layer: cc.TiledLayer
+    property: object
     
     generateToken(tag: string)
     {

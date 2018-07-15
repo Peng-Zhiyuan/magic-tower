@@ -3,6 +3,9 @@ import MapObject from "./MapObject";
 import { ObjType } from "./ObjType";
 import StaticData from "../StaticData/StaticData";
 import { Sheet } from "./Sheet";
+import GameMaster from "../GM/GameMaster";
+import Monster from "./Monster";
+import ScriptManager from "../Scripting/ScriptManager";
 
 const {ccclass, property} = cc._decorator;
 
@@ -74,6 +77,7 @@ export default class Player extends MapObject
             {
                 // battle
                 console.log("BATTLE!")
+                GameMaster.OnBattle(this, obj as Monster)
             }
             else if(obj.type == ObjType.Specail)
             {
@@ -90,6 +94,18 @@ export default class Player extends MapObject
                     // move node
                     let pos = this.layer.getPositionAt(targetX, targetY)
                     this.node.setPosition(pos)
+                }
+            }
+            else if(obj.type == ObjType.Npc)
+            {
+                let script = obj.property["s"]
+                if(script != null)
+                {
+                    ScriptManager.run(script)
+                }
+                else
+                {
+                    console.warn("no script set")
                 }
             }
         }

@@ -19,7 +19,7 @@ export default class Board
     static set(layerName: string, indexX: number, indexY: number, token: Token)
     {
         let layer = this.layerMapping[layerName]
-        layer.set(indexX, indexY, token)
+        layer.pickAndSet(indexX, indexY, token)
     }
 
     static get(layerName: string, indexX: number, indexY: number): Token

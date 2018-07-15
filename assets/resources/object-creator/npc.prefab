@@ -10,7 +10,7 @@
   },
   {
     "__type__": "cc.Node",
-    "_name": "monster",
+    "_name": "npc",
     "_objFlags": 0,
     "_parent": null,
     "_children": [],
@@ -90,7 +90,7 @@
     "_atlas": null
   },
   {
-    "__type__": "409a3wB4rRHNIVco/dlo2E6",
+    "__type__": "b8a9fvB0DNOTp/s0gaF9rdN",
     "_name": "",
     "_objFlags": 0,
     "node": {
@@ -107,9 +107,9 @@
       "__id__": 1
     },
     "asset": {
-      "__uuid__": "19ca591c-6aea-4161-a86a-865dace1dbce"
+      "__uuid__": "cc494403-4647-47d7-8532-85d3beb3a406"
     },
-    "fileId": "95zjiYX1tAuKA80237lGee",
+    "fileId": "00gpamFSRENrRQO8kGiC0X",
     "sync": false
   }
 ]

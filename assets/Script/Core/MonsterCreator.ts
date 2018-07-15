@@ -1,4 +1,4 @@
-import Charactor from "../Charactor/Charactor";
+import Monster from "../Core/Monster";
 import Game from "../Game";
 
 export default class MonsterCreator 
@@ -25,10 +25,10 @@ export default class MonsterCreator
     }
 
 
-    static create(name: string): Charactor
+    static create(name: string): Monster
     {
         let monster_node = cc.instantiate(this.prefab_monster)
-        let monster = monster_node.getComponent(Charactor);
+        let monster = monster_node.getComponent(Monster);
         return monster
     }
 

@@ -1,12 +1,14 @@
 import StaticData from "../StaticData/StaticData";
 import GIDParseInfo from "./GIDParseInfo";
 import { ObjType } from "./ObjType";
-import Charactor from "../Charactor/Charactor";
+import Monster from "../Core/Monster";
 import Item from "./Item";
 import Player from "./Player";
 import SpriteLibrary from "./SpriteLibrary";
 import MapObject from "./MapObject";
 import Specail from "./Specail";
+import Npc from "./Npc";
+import { Sheet } from "./Sheet";
 
 export default class ObjectCreator
 {
@@ -56,8 +58,19 @@ export default class ObjectCreator
             }
         }
 
+        // read npc gid
+        {
+            let sheet = StaticData.getSheet("npc")
+            for(let id in sheet)
+            {
+                let row = sheet[id]
+                let gid = row["gid"]
+                this.gidToParseInfo[gid] = new GIDParseInfo(gid, ObjType.Npc, id)
+            }
+        }
+
         return new Promise<void>((resolve, reject)=>{
-            cc.loader.loadResDir("gid-parser", (error, resList, pathList)=>{
+            cc.loader.loadResDir("object-creator", (error, resList, pathList)=>{
                 if(error == null)
                 {
                     for(let res of resList)
@@ -98,15 +111,19 @@ export default class ObjectCreator
                 return this.createPlayer()
             case ObjType.Specail:
                 return this.createSpecail(info.objName)
+            case ObjType.Npc:
+                return this.createNpc(info.objName)
+            default:
+                throw "Can't create obj type of: " + info.objType
         }
     }
 
-    private static createMonster(name: string): Charactor
+    private static createMonster(name: string): Monster
     {
         // create node
         let prefab = this.prefabMapping["monster"]
         let node = cc.instantiate(prefab)
-        let monster = node.getComponent(Charactor);
+        let monster = node.getComponent(Monster);
 
         // init monster
         let spriteListDefine = StaticData.getCell("monster", name, "sprites") as string
@@ -170,5 +187,28 @@ export default class ObjectCreator
         specail.type = ObjType.Specail
 
         return specail
+    }
+
+    private static createNpc(name: string): Npc
+    {
+        // create node
+        let prefab = this.prefabMapping["npc"]
+        let node = cc.instantiate(prefab)
+        let npc = node.getComponent(Npc);
+
+        // init monster
+        let spriteListDefine = StaticData.getCell(Sheet.Npc, name, "sprites") as string
+        let parts = spriteListDefine.split(",")
+        let spriteList: cc.SpriteFrame[] = []
+        for(let p of parts)
+        {
+            let sprite = SpriteLibrary.get(p)
+            spriteList.push(sprite)
+        }
+        npc.init(spriteList)
+        npc.objName = name
+        npc.type = ObjType.Npc
+
+        return npc
     }
 }
