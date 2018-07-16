@@ -1,45 +1,52 @@
 import Dialog from "../UI/dialog/Dialog";
+import UIEngine from "../../Subsystems/-UIEngine/UIEngine";
+import Select from "../UI/select/Select";
+import MapManager from "../Core/MapManager";
+import Board from "../Core/Board";
+import MapObject from "../Core/MapObject";
 
 const {ccclass, property} = cc._decorator;
 
 @ccclass
 export default class SL 
 {
-    static assetsMapping: {[path: string]: cc.Asset} = {}
-
-    static initAsync(): Promise<void>
+    static async dialogAsync(spriteFrameList: cc.SpriteFrame[], text: string)
     {
-        return new Promise((resolve, reject) =>{
-            cc.loader.loadRes("ui/dialog", (error, res) =>{
-                if(error == null)
-                {
-                    this.assetsMapping["ui/dialog"] = res
-                    resolve()
-                }
-                else
-                {
-                    console.error(error)
-                    reject()
-                }
-            })
-        })
+        let dialog = await UIEngine.forward("dialog") as Dialog
+        await dialog.showAsync(spriteFrameList, text)
     }
 
-    static _dialog: Dialog 
-    static dialog(spriteFrameList: cc.SpriteFrame[], text: string)
+    static async selectAsync(textList: string[]): Promise<string>
     {
-        if(this._dialog == null)
+        let select = await UIEngine.forward("select") as Select
+        let result = await select.showAsync(textList, "")
+        return result
+    }
+
+    static findObject(name: string): MapObject[]
+    {
+        let ret = []
+        for(let layerName in Board.layerMapping)
         {
-            let prefab = this.assetsMapping["ui/dialog"] as any as cc.Node
-            let node = cc.instantiate(prefab)
-            let dialog = node.getComponent(Dialog)
-            var scene = cc.director.getScene()
-            node.parent = scene
-            node.position = new cc.Vec2(320, 700)
-            this._dialog = dialog
+            let layer = Board.layerMapping[layerName]
+            let w = layer.width
+            let h = layer.height
+            for(let i = 0; i < w; i++)
+            {
+                for(let j = 0; j < h; j++)
+                {
+                    let token = layer.getToken(i, j)
+                    if(token != null)
+                    {
+                        if(token.obj.objName == name)
+                        {
+                            ret.push(token.obj)
+                        }
+                    }
+                }
+            }
         }
-        this._dialog.npcSpriteFrame = spriteFrameList
-        this._dialog.text = text
-        this._dialog.node.active = true
+        return ret
     }
+  
 }

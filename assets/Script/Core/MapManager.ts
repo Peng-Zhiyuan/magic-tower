@@ -16,7 +16,7 @@ export default class MapManager
 
     static init()
     {
-        this.map = cc.find("map").getComponent(cc.TiledMap)
+        this.map = cc.find("Canvas/map").getComponent(cc.TiledMap)
     }
 
     static async loadAsync(mapPath: string)
@@ -51,7 +51,7 @@ export default class MapManager
         }
 
         // parse object of each layer
-        await this.parseObjectAsync()
+        this.parseObject()
     }
 
     private static addObj(layer: cc.TiledLayer, indexX: number, indexY: number, obj: cc.Node)
@@ -63,7 +63,7 @@ export default class MapManager
         obj.position = pos
     }
 
-    private static async parseObjectAsync()
+    private static parseObject()
     {
         let layerList = this.map.allLayers()
         for(let layer of layerList)
@@ -109,6 +109,7 @@ export default class MapManager
                 console.warn("tile object info not font a map object to attach: (" + indexX + ", " + indexY + ")")
             }
         }
+        objectGroup.node.active = false
     }
 
     private static createObjByParseInfo(layer: cc.TiledLayer, indexX: number, indexY: number, parseInfo: GIDParseInfo): MapObject

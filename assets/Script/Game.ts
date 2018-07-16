@@ -7,6 +7,9 @@ import StaticData from "./StaticData/StaticData";
 import SpriteLibrary from "./Core/SpriteLibrary";
 import Board from "./Core/Board";
 import SL from "./GM/SL";
+import UIEngine from "../Subsystems/-UIEngine/UIEngine";
+import TaskExecutor, { Task } from "../Subsystems/-TaskExecutor/TaskExecutor";
+import Time from "../Subsystems/-TaskExecutor/Time";
 
 const {ccclass, property} = cc._decorator;
 
@@ -35,18 +38,29 @@ export default class Game extends cc.Component {
     async init()
     {
         cc.view.enableAntiAlias(false);
-        await StaticData.initAsync()
-        await SpriteLibrary.initAsync()
-        //await MonsterCreator.initAsync()
-        await ObjectCreator.initAsync()
-        //CharactorManager.create("kulou")
+        UIEngine.init()
         MapManager.init()
+        
+        // task list
+        let taskList: Task[] =
+        [
+            { name: "ui-engine", func: () => UIEngine.preloadResAsync()},
+            { name: "static-data", func: () => StaticData.initAsync()},
+            { name: "sprite-library", func: () => SpriteLibrary.initAsync()},
+            { name: "object-creator", func: () => ObjectCreator.initResAsync()},
+        ]
+        await TaskExecutor.all(taskList)
+
+        ObjectCreator.init()
         await MapManager.loadAsync("map/map1")
-        await SL.initAsync()
+        
         Board.print()
     }
 
-   
+    update(delta: number)
+    {
+        Time.onUpdate(delta)
+    }
 
 
 }

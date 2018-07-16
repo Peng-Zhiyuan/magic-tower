@@ -19,7 +19,8 @@ export default class ScriptManager
         }
         else
         {
-            await fun()
+            //await fun()
+            Script[name]()
         }
     }
 }

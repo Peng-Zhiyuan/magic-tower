@@ -8,7 +8,7 @@ export default class Npc extends MapObject
     @property(cc.Sprite)
     sprite: cc.Sprite = null
 
-    sprtieFrameList: cc.SpriteFrame[]
+    sprtieFrameList: cc.SpriteFrame[] = []
     frameInterval: number = 0.25
 
     init(spriteFrameList: cc.SpriteFrame[])

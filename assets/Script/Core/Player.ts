@@ -90,11 +90,11 @@ export default class Player extends MapObject
                 }
                 else
                 {
-                    // move data
-                    this.token.cell.layer.pickAndSet(targetX, targetY, this.token)
-                    // move node
-                    let pos = this.layer.getPositionAt(targetX, targetY)
-                    this.node.setPosition(pos)
+                    // // move data
+                    // this.token.cell.layer.pickAndSet(targetX, targetY, this.token)
+                    // // move node
+                    // let pos = this.layer.getPositionAt(targetX, targetY)
+                    // this.node.setPosition(pos)
                 }
             }
             else if(obj.type == ObjType.Npc)

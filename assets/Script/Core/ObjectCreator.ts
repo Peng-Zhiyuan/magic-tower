@@ -16,7 +16,7 @@ export default class ObjectCreator
     static prefabMapping: {[name: string]: cc.Node} = {}
 
 
-    static initAsync(): Promise<void>
+    static init()
     {
         // read player gid
         {
@@ -68,7 +68,10 @@ export default class ObjectCreator
                 this.gidToParseInfo[gid] = new GIDParseInfo(gid, ObjType.Npc, id)
             }
         }
+    }
 
+    static initResAsync(): Promise<void>
+    {
         return new Promise<void>((resolve, reject)=>{
             cc.loader.loadResDir("object-creator", (error, resList, pathList)=>{
                 if(error == null)
