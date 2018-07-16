@@ -10,6 +10,7 @@ import SL from "./GM/SL";
 import UIEngine from "../Subsystems/-UIEngine/UIEngine";
 import TaskExecutor, { Task } from "../Subsystems/-TaskExecutor/TaskExecutor";
 import Time from "../Subsystems/-TaskExecutor/Time";
+import GameMaster from "./GM/GameMaster";
 
 const {ccclass, property} = cc._decorator;
 
@@ -52,9 +53,9 @@ export default class Game extends cc.Component {
         await TaskExecutor.all(taskList)
 
         ObjectCreator.init()
-        await MapManager.loadAsync("map/map1")
+        //await MapManager.loadAsync("map/map1")
+        await GameMaster.nextMapAsync()
         
-        Board.print()
     }
 
     update(delta: number)

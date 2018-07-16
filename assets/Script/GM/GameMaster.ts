@@ -3,6 +3,8 @@ import Monster from "../Core/Monster";
 import StaticData from "../StaticData/StaticData";
 import { Sheet } from "../Core/Sheet";
 import PlayerStatus from "./PlayerStatus";
+import MapManager from "../Core/MapManager";
+import Item from "../Core/Item";
 
 const {ccclass, property} = cc._decorator;
 
@@ -51,15 +53,51 @@ export default class GameMaster
             let monsterY = monster.token.cell.indexY
 
             // kill monster
-            monster.token.pick()
-            monster.node.destroy()
+            monster.memoryDestory()
+            MapManager.removeObject(monster)
 
             // move data
-            player.token.cell.layer.pickAndSet(monsterX, monsterY, player.token)
-            // move node
-            let pos = player.layer.getPositionAt(monsterX, monsterY)
-            player.node.setPosition(pos)
+            MapManager.moveObject(player, monsterX, monsterY)
         }
     }
 
+    static currentMap: number = 0
+
+    static async loadMap(map: number)
+    {
+        let path = "map/map" + map
+        await MapManager.loadAsync(path)
+    }
+    
+    static async nextMapAsync()
+    {
+        this.currentMap += 1
+        await this.loadMap(this.currentMap)
+    }
+
+    static async previousMapAsync()
+    {
+        this.currentMap -= 1
+        await this.loadMap(this.currentMap)
+    }
+
+    static OnPickItem(player: Player, item: Item)
+    {
+        let row = StaticData.getRow(Sheet.Item, item.objName)
+        PlayerStatus.hp += row["add_hp"]
+        PlayerStatus.atk += row["add_atk"]
+        PlayerStatus.def += row["add_def"]
+        PlayerStatus.key_yellow += row["add_yellow_key"]
+        PlayerStatus.key_blue += row["add_blue_key"]
+        PlayerStatus.key_red += row["add_key_red"]
+
+        // destroy item
+        let targetX = item.token.cell.indexX
+        let targetY = item.token.cell.indexY
+        item.memoryDestory()
+        MapManager.removeObject(item)
+        // move player
+        MapManager.moveObject(player, targetX, targetY)
+
+    }
 }

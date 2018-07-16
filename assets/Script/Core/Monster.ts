@@ -1,4 +1,4 @@
-import MapObject from "../Core/MapObject";
+import MapObject from "./MapObject";
 
 const {ccclass, property} = cc._decorator;
 

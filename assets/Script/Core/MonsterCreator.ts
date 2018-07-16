@@ -1,4 +1,4 @@
-import Monster from "../Core/Monster";
+import Monster from "./Monster";
 import Game from "../Game";
 
 export default class MonsterCreator 

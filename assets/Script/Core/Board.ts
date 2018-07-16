@@ -1,5 +1,6 @@
 import Token from "./Token";
 import BoardLayer from "./BoardLayer";
+import { Action } from "../../Subsystems/-TaskExecutor/Action";
 
 export default class Board
 {
@@ -34,6 +35,27 @@ export default class Board
         {
             let layer = this.layerMapping[name]
             layer.print()
+        }
+    }
+
+    static eachToken(callback: Action<Token>)
+    {
+        for(let name in this.layerMapping)
+        {
+            let layer = this.layerMapping[name]
+            let w = layer.width
+            let h = layer.height
+            for(let i = 0; i < w; i++)
+            {
+                for(let j = 0; j < h; j++)
+                {
+                    let token = layer.getToken(i, j)
+                    if(token != null)
+                    {
+                        callback(token)
+                    }
+                }
+            }
         }
     }
 }

@@ -2079,7 +2079,7 @@
   },
   {
     "__type__": "cc.Node",
-    "_name": "块层 1",
+    "_name": "terrian",
     "_objFlags": 0,
     "_parent": {
       "__id__": 52
@@ -2093,7 +2093,7 @@
       }
     ],
     "_prefab": null,
-    "_id": "a96UyatFRCgIEalOspJlhM",
+    "_id": "adimYfg0FDm7PbluQAiml+",
     "_opacity": 255,
     "_color": {
       "__type__": "cc.Color",
@@ -2140,7 +2140,7 @@
   },
   {
     "__type__": "cc.Node",
-    "_name": "块层 2",
+    "_name": "cha",
     "_objFlags": 0,
     "_parent": {
       "__id__": 52
@@ -2154,7 +2154,7 @@
       }
     ],
     "_prefab": null,
-    "_id": "4bqympHklLiqIItpaM7Eq1",
+    "_id": "801Ip1eOVMmZFbicAOGe2w",
     "_opacity": 255,
     "_color": {
       "__type__": "cc.Color",
@@ -2201,7 +2201,7 @@
   },
   {
     "__type__": "cc.Node",
-    "_name": "对象层 1",
+    "_name": "info",
     "_objFlags": 0,
     "_parent": {
       "__id__": 52
@@ -2215,7 +2215,7 @@
       }
     ],
     "_prefab": null,
-    "_id": "7aOCkPwjpNSYsWBh2cJICj",
+    "_id": "3dIOLo1vxJ1ZiG8JDRs1rw",
     "_opacity": 255,
     "_color": {
       "__type__": "cc.Color",
@@ -2938,7 +2938,7 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 399,
+      "width": 162,
       "height": 50
     },
     "_rotationX": 0,
@@ -2969,7 +2969,7 @@
     "_actualFontSize": 40,
     "_fontSize": 40,
     "_lineHeight": 50,
-    "_enableWrapText": true,
+    "_enableWrapText": false,
     "_N$file": null,
     "_isSystemFontUsed": true,
     "_spacingX": 0,
@@ -2977,7 +2977,7 @@
     "_N$horizontalAlign": 0,
     "_N$verticalAlign": 0,
     "_N$fontFamily": "Arial",
-    "_N$overflow": 3
+    "_N$overflow": 0
   },
   {
     "__type__": "cc.Widget",
@@ -2991,7 +2991,7 @@
     "_target": null,
     "_alignFlags": 45,
     "_left": -5.684341886080802e-14,
-    "_right": 5.684341886080802e-14,
+    "_right": 237.00000000000006,
     "_top": 0,
     "_bottom": -30,
     "_verticalCenter": 0,

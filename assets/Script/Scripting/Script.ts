@@ -2,6 +2,7 @@ import SL from "../GM/SL";
 import ScriptManager from "./ScriptManager";
 import PlayerStatus from "../GM/PlayerStatus";
 import { Occupation } from "../GM/Occupation";
+import MapManager from "../Core/MapManager";
 
 const {ccclass, property} = cc._decorator;
 
@@ -43,8 +44,8 @@ export default class Script
         let list = SL.findObject("fence")
         for(let fence of list)
         {
-            fence.token.pick()
-            fence.node.destroy()
+            fence.memoryDestory()
+            MapManager.removeObject(fence)
         }
     }
 

@@ -21,8 +21,23 @@ export default class MapManager
 
     static async loadAsync(mapPath: string)
     {
+        // log
+        console.log("[MapManager] load " + mapPath)
+
+        // clean
+        Board.eachToken(token => {
+            token.obj.node.destroy()
+            token.pick()
+        })
+        for(let name in this.layerToObjectRoot)
+        {
+            let root = this.layerToObjectRoot[name]
+            root.destroy()
+        }
+        this.layerToObjectRoot = {}
+
         // set map component
-        let mapAsset = await ResUtil.loadRes<cc.TiledMapAsset>("map/map1")
+        let mapAsset = await ResUtil.loadRes<cc.TiledMapAsset>(mapPath)
         this.map.tmxAsset = mapAsset
 
         // create objRoot of each layers
@@ -52,6 +67,17 @@ export default class MapManager
 
         // parse object of each layer
         this.parseObject()
+
+        // notify obj
+        Board.eachToken(token => {
+            let obj = token.obj
+            if(obj != null)
+            {
+                obj.onEnterMap()
+            }
+        })
+
+        Board.print()
     }
 
     private static addObj(layer: cc.TiledLayer, indexX: number, indexY: number, obj: cc.Node)
@@ -87,29 +113,33 @@ export default class MapManager
                 }
             }
         }
-        let objectGroup = this.map.getObjectGroup("对象层 1")
-        let objList = objectGroup.getObjects()
-        let cellWidth = this.map.getTileSize().width
-        let cellHeight = this.map.getTileSize().height
-        for(let obj of objList)
+        let objectGroup = this.map.getObjectGroup("info")
+        if(objectGroup != null)
         {
-            let x = obj.offset["x"]
-            let y = obj.offset["y"]
-            let indexX = Math.floor(x / cellWidth)
-            let indexY = Math.floor(y / cellHeight)
-            let token = Board.get("块层 2", indexX, indexY)
-            if(token != null)
+            let objList = objectGroup.getObjects()
+            let cellWidth = this.map.getTileSize().width
+            let cellHeight = this.map.getTileSize().height
+            for(let obj of objList)
             {
-                let property = obj["_properties"]
-                token.obj.property = property
-                console.log("attach " + JSON.stringify(property) + " to " + token.obj.objName)
+                let x = obj.offset["x"]
+                let y = obj.offset["y"]
+                let indexX = Math.floor(x / cellWidth)
+                let indexY = Math.floor(y / cellHeight)
+                let token = Board.get("cha", indexX, indexY)
+                if(token != null)
+                {
+                    let property = obj["_properties"]
+                    token.obj.property = property
+                    console.log("attach " + JSON.stringify(property) + " to " + token.obj.objName)
+                }
+                else
+                {
+                    console.warn("tile object info not font a map object to attach: (" + indexX + ", " + indexY + ")")
+                }
             }
-            else
-            {
-                console.warn("tile object info not font a map object to attach: (" + indexX + ", " + indexY + ")")
-            }
+            objectGroup.node.active = false
         }
-        objectGroup.node.active = false
+        
     }
 
     private static createObjByParseInfo(layer: cc.TiledLayer, indexX: number, indexY: number, parseInfo: GIDParseInfo): MapObject
@@ -118,5 +148,21 @@ export default class MapManager
         this.addObj(layer, indexX, indexY, obj.node)
         obj.layer = layer
         return obj
+    }
+
+    static removeObject(obj: MapObject)
+    {
+        // clean data from board
+        obj.token.pick()
+
+        // destroy node
+        obj.node.destroy()
+    }
+
+    static moveObject(obj: MapObject, indexX: number, indexY: number)
+    {
+        obj.token.cell.layer.pickAndSet(indexX, indexY, obj.token)
+        let pos = obj.layer.getPositionAt(indexX, indexY)
+        obj.node.position = pos
     }
 }
