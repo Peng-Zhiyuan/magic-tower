@@ -7,6 +7,13 @@ const {ccclass, property} = cc._decorator;
 @ccclass
 export default class ControllerFloating extends Floating
 {
+    onCreate()
+    {
+        
+    }
+
+    
+
     onKeyButton(event: any, customData: string)
     {
        if(customData == "left")
