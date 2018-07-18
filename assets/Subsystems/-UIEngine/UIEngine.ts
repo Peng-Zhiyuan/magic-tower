@@ -37,7 +37,7 @@ export default class UIEngine {
 
     }
 
-    static async forward(pageName: string, param: string = null, replaceTop: boolean = false): Promise<Page> {
+    static async forwardAsync(pageName: string, param: string = null, replaceTop: boolean = false): Promise<Page> {
         cc.log("[UIEngine] Navigate to: " + pageName)
 
         let oldPage = PageStack.find(pageName)
@@ -109,7 +109,7 @@ export default class UIEngine {
         return PageStack.count
     }
 
-    static async showFloatingAsync(name: string, param: string, depth: number, cancelDelay?: boolean) {
+    static async showFloatingAsync(name: string, param: string = null, depth: number = null) {
         cc.log("[UIEngine] Show Floating: " + name)
         let floating: Floating = this.createdFloating[name]
         if (floating == null || floating == undefined) {

@@ -165,7 +165,7 @@ export default class Player extends MapObject
     }    
 }
 
-enum Arrow
+export enum Arrow
 {
     Up,
     Down,

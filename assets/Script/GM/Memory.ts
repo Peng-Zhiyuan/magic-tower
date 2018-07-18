@@ -15,9 +15,15 @@ export default class Memory
         return memory
     }
 
-    static getCurrentMapMemory(): {}
+    static getCurrentMapMemory(): Object
     {
-        let mapIndex = GameMaster.currentMap
+        //let mapIndex = GameMaster.currentMap
+        let mapIndex = 0
         return this.getMapMemmory(mapIndex)
+    }
+
+    static reset()
+    {
+        this.mapping = {}
     }
 }

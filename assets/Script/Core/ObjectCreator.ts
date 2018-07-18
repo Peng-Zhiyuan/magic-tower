@@ -1,7 +1,7 @@
 import StaticData from "../StaticData/StaticData";
 import GIDParseInfo from "./GIDParseInfo";
 import { ObjType } from "./ObjType";
-import Monster from "../Core/Monster";
+import Monster from "./Monster";
 import Item from "./Item";
 import Player from "./Player";
 import SpriteLibrary from "./SpriteLibrary";
@@ -9,20 +9,22 @@ import MapObject from "./MapObject";
 import Specail from "./Specail";
 import Npc from "./Npc";
 import { Sheet } from "./Sheet";
+import MapManager from "./MapManager";
+
 
 export default class ObjectCreator
 {
     static gidToParseInfo: {[gid: string]: GIDParseInfo} = {}
     static prefabMapping: {[name: string]: cc.Node} = {}
 
-
+    
     static init()
     {
-        // read player gid
-        {
-            let player_gid = StaticData.getCell("base", "player_gid", "value")
-            this.gidToParseInfo[player_gid] = new GIDParseInfo(player_gid, ObjType.Player, "player")
-        }
+        // // read player gid
+        // {
+        //     let player_gid = StaticData.getCell("base", "player_gid", "value")
+        //     this.gidToParseInfo[player_gid] = new GIDParseInfo(player_gid, ObjType.Player, "player")
+        // }
 
 
         // read monster gid
@@ -161,7 +163,7 @@ export default class ObjectCreator
         return item
     }
 
-    private static createPlayer(): Player
+    public static createPlayer(): Player
     {
         // create node
         let prefab = this.prefabMapping["player"]

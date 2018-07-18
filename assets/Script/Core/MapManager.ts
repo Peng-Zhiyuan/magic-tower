@@ -2,24 +2,26 @@ import ResUtil from "./ResUtil";
 import ObjectCreator from "./ObjectCreator";
 import Board from "./Board";
 import GIDParseInfo from "./GIDParseInfo";
-import { ObjType } from "./ObjType";
-import MonsterCreator from "./MonsterCreator";
-import StaticData from "../StaticData/StaticData";
-import SpriteLibrary from "./SpriteLibrary";
 import MapObject from "./MapObject";
-import Token from "./Token";
+import BoardIndex from "./BoardLocation";
+import BoardLocation from "./BoardLocation";
+import Player from "./Player";
+
 
 export default class MapManager
 {
     static map: cc.TiledMap
     static layerToObjectRoot: {[name: string]: cc.Node}
+    static upBorn: BoardIndex = new BoardLocation()
+    static downBorn: BoardIndex = new BoardLocation()
+    static player: Player
 
     static init()
     {
         this.map = cc.find("Canvas/map").getComponent(cc.TiledMap)
     }
 
-    static async loadAsync(mapPath: string)
+    static async loadAsync(mapPath: string, isDown: boolean)
     {
         // log
         console.log("[MapManager] load " + mapPath)
@@ -68,6 +70,9 @@ export default class MapManager
         // parse object of each layer
         this.parseObject()
 
+        // parse info
+        this.parseInfo()
+
         // notify obj
         Board.eachToken(token => {
             let obj = token.obj
@@ -78,6 +83,18 @@ export default class MapManager
         })
 
         Board.print()
+
+        // create player
+        if(isDown)
+        {
+            let layer = this.map.getLayer("cha")
+            this.player = this.createPlayer(layer, this.downBorn.indexX, this.downBorn.indexY)
+        }
+        else
+        {
+            let layer = this.map.getLayer("cha")
+            this.player = this.createPlayer(layer, this.upBorn.indexX, this.upBorn.indexY)
+        }
     }
 
     private static addObj(layer: cc.TiledLayer, indexX: number, indexY: number, obj: cc.Node)
@@ -105,41 +122,59 @@ export default class MapManager
                     {
                         console.log("(" + i + ", " + j + ") parse to " + parseInfo.objType + ": " + parseInfo.objName)
                         layer.setTileGID(0, i, j)
-                        let obj = this.createObjByParseInfo(layer, i, j, parseInfo)
-                        obj.generateToken(parseInfo.objName)
-                        let layerName = layer.getLayerName()
-                        Board.set(layerName, i, j, obj.token)
+                        this.createObjByParseInfo(layer, i, j, parseInfo)
                     }
                 }
             }
-        }
+        } 
+    }
+
+    private static parseInfo()
+    {
         let objectGroup = this.map.getObjectGroup("info")
         if(objectGroup != null)
         {
             let objList = objectGroup.getObjects()
             let cellWidth = this.map.getTileSize().width
             let cellHeight = this.map.getTileSize().height
-            for(let obj of objList)
+            for(let infoObj of objList)
             {
-                let x = obj.offset["x"]
-                let y = obj.offset["y"]
+                infoObj.objectVisible = false
+                let x = infoObj.offset["x"]
+                let y = infoObj.offset["y"]
                 let indexX = Math.floor(x / cellWidth)
                 let indexY = Math.floor(y / cellHeight)
-                let token = Board.get("cha", indexX, indexY)
-                if(token != null)
+                let type = infoObj["_properties"]["t"]
+                if(type == "obj")
                 {
-                    let property = obj["_properties"]
-                    token.obj.property = property
-                    console.log("attach " + JSON.stringify(property) + " to " + token.obj.objName)
+                    // 这个信息是需要附加到一个对象上的
+                    let token = Board.get("cha", indexX, indexY)
+                    if(token != null)
+                    {
+                        let property = infoObj["_properties"]
+                        token.obj.property = property
+                        console.log("attach " + JSON.stringify(property) + " to " + token.obj.objName)
+                    }
+                    else
+                    {
+                        console.warn("tile object info not font a map object to attach: (" + indexX + ", " + indexY + ")")
+                    }
                 }
-                else
+                else if(type == "up_born")
                 {
-                    console.warn("tile object info not font a map object to attach: (" + indexX + ", " + indexY + ")")
+                    this.upBorn.indexX = indexX
+                    this.upBorn.indexY = indexY
                 }
+                else if(type == "down_born")
+                {
+                    this.downBorn.indexX = indexX
+                    this.downBorn.indexY = indexY
+                }
+
             }
+            objectGroup.node.active = true
             objectGroup.node.active = false
         }
-        
     }
 
     private static createObjByParseInfo(layer: cc.TiledLayer, indexX: number, indexY: number, parseInfo: GIDParseInfo): MapObject
@@ -147,6 +182,24 @@ export default class MapManager
         let obj = ObjectCreator.createByParseInfo(parseInfo)
         this.addObj(layer, indexX, indexY, obj.node)
         obj.layer = layer
+
+        obj.generateToken(parseInfo.objName)
+        let layerName = layer.getLayerName()
+        Board.set(layerName, indexX, indexY, obj.token)
+
+        return obj
+    }
+
+    private static createPlayer(layer: cc.TiledLayer, indexX: number, indexY: number): Player
+    {
+        let obj = ObjectCreator.createPlayer()
+        this.addObj(layer, indexX, indexY, obj.node)
+        obj.layer = layer
+
+        obj.generateToken("player")
+        let layerName = layer.getLayerName()
+        Board.set(layerName, indexX, indexY, obj.token)
+
         return obj
     }
 

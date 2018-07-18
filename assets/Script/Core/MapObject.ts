@@ -1,7 +1,5 @@
 import Token from "./Token";
 import { ObjType } from "./ObjType";
-import Memory from "../GM/Memory";
-import MapManager from "./MapManager";
 
 const {ccclass, property} = cc._decorator;
 
@@ -28,48 +26,14 @@ export default class MapObject extends cc.Component
         this.token.obj = this
     }
 
-    static fuck()
-    {
-        return Memory.getCurrentMapMemory()
-    }
-
     onEnterMap()
     {
-        let a = MapObject.fuck()//Memory.getCurrentMapMemory()
-        let objMemo = a[this.idInMap]
-        if(objMemo != null)
-        {
-            if(objMemo["destory"])
-            {
-                //MapManager.removeObject(this)
-            }
-        }
+
     }
+ 
+    memoryDestory(): void
+    {
 
-    // onEnterMap()
-    // {
-    //     let memory = Memory.getCurrentMapMemory()
-    //     let objMemo = memory[this.idInMap()]
-    //     if(objMemo != null)
-    //     {
-    //         if(objMemo["destory"])
-    //         {
-    //             MapManager.removeObject(this)
-    //         }
-    //     }
-        
-    // }
-
-    // memoryDestory2(): void
-    // {
-    //     let memory = Memory.getCurrentMapMemory()
-    //     let objMemo = memory[this.idInMap]
-    //     if(objMemo == null)
-    //     {
-    //         objMemo = {}
-    //         memory[this.idInMap] = objMemo
-    //     }
-    //     objMemo["destory"] = true
-    // }
+    }
 
 }

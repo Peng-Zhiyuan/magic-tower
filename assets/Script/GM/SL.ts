@@ -12,13 +12,13 @@ export default class SL
 {
     static async dialogAsync(spriteFrameList: cc.SpriteFrame[], text: string)
     {
-        let dialog = await UIEngine.forward("dialog") as Dialog
+        let dialog = await UIEngine.forwardAsync("dialog") as Dialog
         await dialog.showAsync(spriteFrameList, text)
     }
 
     static async selectAsync(textList: string[]): Promise<string>
     {
-        let select = await UIEngine.forward("select") as Select
+        let select = await UIEngine.forwardAsync("select") as Select
         let result = await select.showAsync(textList, "")
         return result
     }

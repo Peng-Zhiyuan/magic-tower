@@ -5,12 +5,11 @@ import ResUtil from "./Core/ResUtil";
 import MapManager from "./Core/MapManager";
 import StaticData from "./StaticData/StaticData";
 import SpriteLibrary from "./Core/SpriteLibrary";
-import Board from "./Core/Board";
-import SL from "./GM/SL";
 import UIEngine from "../Subsystems/-UIEngine/UIEngine";
 import TaskExecutor, { Task } from "../Subsystems/-TaskExecutor/TaskExecutor";
-import Time from "../Subsystems/-TaskExecutor/Time";
 import GameMaster from "./GM/GameMaster";
+import UpdateManager from "../Subsystems/-BaseKit/UpdateManager";
+import Time from "../Subsystems/-BaseKit/Time";
 
 const {ccclass, property} = cc._decorator;
 
@@ -54,13 +53,15 @@ export default class Game extends cc.Component {
 
         ObjectCreator.init()
         //await MapManager.loadAsync("map/map1")
-        await GameMaster.nextMapAsync()
+        await GameMaster.restart()
+        UIEngine.showFloatingAsync("ControllerFloating", )
         
     }
 
     update(delta: number)
     {
         Time.onUpdate(delta)
+        UpdateManager.update()
     }
 
 

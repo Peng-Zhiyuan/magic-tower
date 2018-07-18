@@ -16,6 +16,12 @@ export default class StatusPanel extends cc.Component {
     label_cert: cc.Label = null;
     @property(cc.Label)
     label_occu: cc.Label = null;
+    @property(cc.Label)
+    key_yellow: cc.Label = null;
+    @property(cc.Label)
+    key_blue: cc.Label = null;
+    @property(cc.Label)
+    key_red: cc.Label = null;
 
     update()
     {
@@ -36,5 +42,8 @@ export default class StatusPanel extends cc.Component {
                 this.label_occu.string = "Warrior"
                 break;
         }
+        this.key_yellow.string = "x " + PlayerStatus.key_yellow.toString()
+        this.key_blue.string = "x " + PlayerStatus.key_blue.toString()
+        this.key_red.string = "x " + PlayerStatus.key_red.toString()
     }
 }

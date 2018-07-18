@@ -1,5 +1,5 @@
-import TimeStop from "./TimeStop";
-import { Action0, Func0 } from "./Action";
+import TimeStop from "../-BaseKit/TimeStop";
+import { Action0, Func0 } from "../-BaseKit/Action";
 
 export default class TaskExecutor
 {
