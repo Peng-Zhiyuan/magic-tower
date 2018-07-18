@@ -10,6 +10,8 @@ export default class Monster extends MapObject
     @property(cc.Sprite)
     sprite: cc.Sprite = null
 
+    
+
     sprtieFrameList: cc.SpriteFrame[]
     frameInterval: number = 0.25
 
