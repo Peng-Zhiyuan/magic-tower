@@ -58,4 +58,10 @@ export default class Script
     {
         await SL.dialogAsync(ScriptManager.npc.sprtieFrameList, "Remilia prpr.")
     }
+
+    static async f1_s(): Promise<void>
+    {
+        await SL.dialogAsync(ScriptManager.npc.sprtieFrameList, "Press buton 's' to check monster stat.")
+        await SL.dialogAsync(ScriptManager.npc.sprtieFrameList, "Four numbers represent HP, ATK, DEF, and damage prediction (DP).")
+    }
 }

@@ -6,19 +6,20 @@ export default class Memory
 
     static getMapMemmory(mapIndex: number)
     {
-        let memory = this.mapping[name]
+        let memory = this.mapping[mapIndex]
         if(memory == null)
         {
             memory = {}
-            this.mapping[name] = memory
+            memory["map"] = mapIndex
+            this.mapping[mapIndex] = memory
         }
         return memory
     }
 
     static getCurrentMapMemory(): Object
     {
-        //let mapIndex = GameMaster.currentMap
-        let mapIndex = 0
+        let mapIndex = GameMaster.currentMap
+        //let mapIndex = 0
         return this.getMapMemmory(mapIndex)
     }
 

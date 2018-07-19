@@ -11,12 +11,20 @@ import UIEngine from "../../Subsystems/-UIEngine/UIEngine";
 import BattelPage from "../UI/BattlePage/BattlePage";
 import AsyncUtil from "../../Subsystems/-BaseKit/AsyncUtil";
 import Memory from "./Memory";
+import Board from "../Core/Board";
+import Token from "../Core/Token";
+import { ObjType } from "../Core/ObjType";
+import ScriptManager from "../Scripting/ScriptManager";
+import Npc from "../Core/Npc";
 
 const {ccclass, property} = cc._decorator;
 
 @ccclass
 export default class GameMaster 
 {
+    static inBattle: boolean
+
+
     static OnBattle(player: Player, monster: Monster)
     {
         this.doBattleAsync(player, monster)
@@ -24,6 +32,9 @@ export default class GameMaster
 
     static async doBattleAsync(player: Player, monster: Monster): Promise<void>
     {
+        // set battle state
+        this.inBattle = true
+
         let waiteTime = 0.1
         let page = await UIEngine.forwardAsync("BattlePage") as any as BattelPage
         let name = monster.objName
@@ -31,6 +42,7 @@ export default class GameMaster
         let hp = row["hp"]
         let atk = row["atk"]
         let def = row["def"]
+        let exp = row["exp"]
 
         // set monster sprite
         page.enemySpriteFrameList = monster.sprtieFrameList
@@ -50,6 +62,10 @@ export default class GameMaster
             // player's turn
             {
                 let dmg = PlayerStatus.atk - def
+                if(dmg < 0)
+                {
+                    dmg = 0
+                }
                 // take cert
                 if(Math.random() * 100 < PlayerStatus.cert)
                 {
@@ -82,6 +98,10 @@ export default class GameMaster
             // monster's turn
             {
                 let dmg = atk - PlayerStatus.def
+                if(dmg < 0)
+                {
+                    dmg = 0
+                }
                 PlayerStatus.hp -= dmg
                 if(PlayerStatus.hp <= 0)
                 {
@@ -119,11 +139,20 @@ export default class GameMaster
 
             // move data
             MapManager.moveObject(player, monsterX, monsterY)
+
+            // add exp
+            this.addExp(exp)
         }
         else
         {
             UIEngine.forwardAsync("GGPage")
         }
+
+        // set battle end
+        this.inBattle = false
+
+        // update monster state
+        this.refreshMonsterState()
     }
 
     static currentMap: number = 0
@@ -164,13 +193,17 @@ export default class GameMaster
         // move player
         MapManager.moveObject(player, targetX, targetY)
 
+        // update monster stat
+        this.refreshMonsterState()
+
     }
 
     static CalcuBuff(value: number)
     {
         if(PlayerStatus.occupation == Occupation.Warrior)
         {
-            let extra = Math.ceil(value * 0.25)
+            let benifet = Number(StaticData.getCell("base", "warrior_benifet", "value"))
+            let extra = Math.ceil(value * benifet)
             return value + extra
         }
         return value
@@ -178,9 +211,216 @@ export default class GameMaster
 
     static restart()
     {
+        this.inBattle = false
         Memory.reset()
         PlayerStatus.reset()
         this.currentMap = 0
         this.nextMapAsync()
     }
+    
+    static refreshMonsterState()
+    {
+        if(this.showingMonsterState)
+        {
+            this.showMonsterState(true)
+        }
+    }
+
+    static showingMonsterState: boolean
+    static showMonsterState(b: boolean)
+    {
+        this.showingMonsterState = b
+        Board.eachToken( (token:Token) =>{
+            if(token.obj.type == ObjType.Monster)
+            {
+                let monster = token.obj as Monster
+                if(b)
+                {
+                    let state = monster.state
+                    let row = StaticData.getRow(Sheet.Monster, monster.objName)
+                    let hp = row["hp"]
+                    let atk = row["atk"]
+                    let def = row["def"]
+                    let playerDmg = PlayerStatus.atk - def
+                    if(playerDmg < 0)
+                    {
+                        playerDmg = 0
+                    }
+                    let playerNeedAttackTimes = Math.ceil(hp / playerDmg)
+                    let monsterAttackTimes = playerNeedAttackTimes - 1
+                    if(monsterAttackTimes < 0)
+                    {
+                        monsterAttackTimes = 0
+                    }
+                    let monsterDmg = atk - PlayerStatus.def
+                    if(monsterDmg < 0)
+                    {
+                        monsterDmg = 0
+                    }
+                    let loss = monsterAttackTimes * monsterDmg
+                    state.hp = hp
+                    state.atk = atk
+                    state.def = def
+                    state.loss = loss == Infinity ? "9999" : loss.toString()
+                    if(loss >= PlayerStatus.hp || loss == Infinity)
+                    {
+                        state.lossColor = cc.Color.RED
+                    }
+                    else if(loss >= Math.floor(PlayerStatus.hp * 0.4))
+                    {
+                        state.lossColor = cc.Color.YELLOW
+                    }
+                    else if(loss == 0)
+                    {
+                        state.lossColor = cc.Color.GREEN
+                    }
+                    else
+                    {
+                        state.lossColor = cc.Color.WHITE
+                    }
+                    
+                    monster.showStat(true)
+                }
+                else
+                {
+                    monster.showStat(false)
+                }
+            }
+        })
+    }
+
+    static addExp(value: number)
+    {
+        PlayerStatus.exp += value
+        while(PlayerStatus.exp >= 100)
+        {
+            PlayerStatus.level++
+            PlayerStatus.exp -= 100
+            let hp_grouth = Number(StaticData.getCell("base", "hp_grouth", "value"))
+            let atk_grouth = Number(StaticData.getCell("base", "atk_grouth", "value"))
+            let def_grouth = Number(StaticData.getCell("base", "def_grouth", "value"))
+            PlayerStatus.hp += this.CalcuBuff(hp_grouth)
+            PlayerStatus.atk += this.CalcuBuff(atk_grouth)
+            PlayerStatus.def += this.CalcuBuff(def_grouth)
+        }
+    }
+
+    static movePlayer(arrow: Arrow)
+    {
+        if(this.inBattle)
+        {
+            return
+        }
+        let boardX = MapManager.player.token.cell.indexX
+        let boardY = MapManager.player.token.cell.indexY
+        let targetX = boardX
+        let targetY = boardY
+        switch(arrow)
+        {
+            case Arrow.Up:
+                targetY -= 1
+                break
+            case Arrow.Down:
+                targetY += 1
+                break
+            case Arrow.Left:
+                targetX -= 1
+                break
+            case Arrow.Right:
+                targetX += 1
+                break
+        }
+        let valid = MapManager.player.token.cell.layer.isValid(targetX, targetY)
+        if(!valid)
+        {
+            return
+        }
+        let targetToken = MapManager.player.token.cell.layer.getToken(targetX, targetY)
+        if(targetToken != null)
+        {
+            let obj = targetToken.obj
+            if(obj.type == ObjType.Monster)
+            {
+                // battle
+                console.log("BATTLE!")
+                GameMaster.OnBattle(MapManager.player, obj as Monster)
+            }
+            else if(obj.type == ObjType.Specail)
+            {
+                // TODO: ...
+                let row = StaticData.getRow(Sheet.Specail, obj.objName)
+                let change_map = row["change_map"] as string
+                let dec_item_to_destroy = row["dec_item_to_destroy"] as string
+                if(change_map != "")
+                {
+                    if(change_map == "NEXT")
+                    {
+                        GameMaster.nextMapAsync()
+                    }
+                    else
+                    {
+                        GameMaster.previousMapAsync()
+                    }
+                }
+                if(dec_item_to_destroy != "")
+                {
+                    let list = dec_item_to_destroy.split(",")
+                    let enouph = PlayerStatus.isKeyEnouph(list)
+                    let occu = PlayerStatus.occupation
+                    if(enouph || occu == Occupation.Thief)
+                    {
+                        // dec keys
+                        if(occu != Occupation.Thief)
+                        {
+                            PlayerStatus.decKey(list)
+                        }
+
+                        // remove door
+                        obj.memoryDestory()
+                        obj.token.pick()
+                        obj.node.destroy()
+
+                        // node player
+                        MapManager.player.token.cell.layer.pickAndSet(targetX, targetY, MapManager.player.token)
+                        let pos = MapManager.player.layer.getPositionAt(targetX, targetY)
+                        MapManager.player.node.setPosition(pos)
+                    }
+                    else
+                    {
+                        // do nothing
+                    }
+                }
+
+            }
+            else if(obj.type == ObjType.Npc)
+            {
+                let script = obj.property["s"]
+                if(script != null)
+                {
+                    ScriptManager.run(obj as any as Npc, script)
+                }
+                else
+                {
+                    console.warn("no script set")
+                }
+            }
+            else if(obj.type == ObjType.Item)
+            {
+                GameMaster.OnPickItem(MapManager.player, obj as Item)
+            }
+        }
+        else
+        {
+            MapManager.moveObject(MapManager.player, targetX, targetY)
+        }
+    }  
+
+}
+
+export enum Arrow
+{
+    Up,
+    Down,
+    Left,
+    Right,
 }

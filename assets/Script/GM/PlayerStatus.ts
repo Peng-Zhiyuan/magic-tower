@@ -1,5 +1,6 @@
 import { Occupation } from "./Occupation";
 import { KeyType } from "./KeyType";
+import StaticData from "../StaticData/StaticData";
 
 export default class PlayerStatus
 {
@@ -11,17 +12,24 @@ export default class PlayerStatus
     static key_yellow: number = 0
     static key_blue: number = 0
     static key_red: number = 0
+    static exp: number = 0
+    static level: number = 0
 
     static reset()
     {
         this.occupation = Occupation.None
-        this.hp = 200
-        this.atk = 10
-        this.def = 10
+        let hp = Number(StaticData.getCell("base", "player_hp", "value"))
+        let atk = Number(StaticData.getCell("base", "player_atk", "value"))
+        let def = Number(StaticData.getCell("base", "player_def", "value"))
+        this.hp = hp
+        this.atk = atk
+        this.def = def
         this.cert = 0
         this.key_yellow = 0
         this.key_blue = 0
         this.key_red = 0
+        this.exp = 0
+        this.level = 1
     }
 
     static isKeyEnouph(keyList: string[])

@@ -1,6 +1,7 @@
 import MapObject from "./MapObject";
 import Memory from "../GM/Memory";
 import MapManager from "./MapManager";
+import MonsterStat from "./MonsterStat";
 
 const {ccclass, property} = cc._decorator;
 
@@ -9,8 +10,9 @@ export default class Monster extends MapObject
 {
     @property(cc.Sprite)
     sprite: cc.Sprite = null
+    @property(MonsterStat)
+    state: MonsterStat
 
-    
 
     sprtieFrameList: cc.SpriteFrame[]
     frameInterval: number = 0.25
@@ -19,6 +21,7 @@ export default class Monster extends MapObject
     {
         this.sprtieFrameList = spriteFrameList;
         this.setSpriteToNext()
+        this.showStat(false)
     }
 
     lostTime: number = 0
@@ -73,4 +76,10 @@ export default class Monster extends MapObject
         }
         objMemo["destory"] = true
     }
+
+    showStat(b: boolean)
+    {
+        this.state.node.active = b
+    }
+    
 }
