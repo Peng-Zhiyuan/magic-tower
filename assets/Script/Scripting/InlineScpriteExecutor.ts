@@ -3,6 +3,7 @@ import ScriptManager from "./ScriptManager";
 import PlayerStatus from "../GM/PlayerStatus";
 import { Occupation } from "../GM/Occupation";
 import MapManager from "../Core/MapManager";
+import AsyncUtil from "../../Subsystems/-BaseKit/AsyncUtil";
 
 export default class InlineScriptExecutor
 {
@@ -66,6 +67,11 @@ export default class InlineScriptExecutor
                 let targetIndexX = Number(argParts[2])
                 let targetIndexY = Number(argParts[3])
                 SL.move(indexX, indexY, targetIndexX, targetIndexY)
+            }
+            else if(cmd == "sleep")
+            {
+                let seconds = Number(arg)
+                await AsyncUtil.waiteAsync(seconds)
             }
             else if(cmd == "if" || cmd == "elseif")
             {
