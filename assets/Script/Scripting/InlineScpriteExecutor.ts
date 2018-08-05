@@ -20,7 +20,13 @@ export default class InlineScriptExecutor
             let arg = parts[1]
             if(cmd == "dialog")
             {
-                await SL.dialogAsync(ScriptManager.npc.sprtieFrameList, arg)
+                let allarg = arg
+                for(let j = 2; j <= parts.length; j++)
+                {
+                    let a = parts[i]
+                    allarg = allarg + " " + a
+                }
+                await SL.dialogAsync(ScriptManager.npc.sprtieFrameList, allarg)
             }
             else if(cmd == "select")
             {
