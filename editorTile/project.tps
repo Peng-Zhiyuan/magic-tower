@@ -163,7 +163,7 @@
             <key>trimMargin</key>
             <uint>1</uint>
             <key>trimMode</key>
-            <enum type="SpriteSettings::TrimMode">Trim</enum>
+            <enum type="SpriteSettings::TrimMode">None</enum>
             <key>tracerTolerance</key>
             <int>200</int>
             <key>heuristicMask</key>
@@ -193,10 +193,39 @@
             <key type="filename">112.png</key>
             <key type="filename">113.png</key>
             <key type="filename">114.png</key>
+            <key type="filename">115.png</key>
+            <key type="filename">116.png</key>
+            <key type="filename">117.png</key>
+            <key type="filename">118.png</key>
+            <key type="filename">119.png</key>
             <key type="filename">12.png</key>
+            <key type="filename">120.png</key>
+            <key type="filename">121.png</key>
+            <key type="filename">122.png</key>
+            <key type="filename">123.png</key>
+            <key type="filename">124.png</key>
+            <key type="filename">125.png</key>
+            <key type="filename">126.png</key>
+            <key type="filename">127.png</key>
+            <key type="filename">128.png</key>
+            <key type="filename">129.png</key>
             <key type="filename">13.png</key>
+            <key type="filename">130.png</key>
+            <key type="filename">131.png</key>
+            <key type="filename">132.png</key>
+            <key type="filename">133.png</key>
+            <key type="filename">134.png</key>
+            <key type="filename">135.png</key>
+            <key type="filename">136.png</key>
+            <key type="filename">137.png</key>
+            <key type="filename">138.png</key>
+            <key type="filename">139.png</key>
             <key type="filename">14.png</key>
+            <key type="filename">140.png</key>
             <key type="filename">15.png</key>
+            <key type="filename">151.png</key>
+            <key type="filename">152.png</key>
+            <key type="filename">153.png</key>
             <key type="filename">16.png</key>
             <key type="filename">17.png</key>
             <key type="filename">18.png</key>
@@ -301,16 +330,16 @@
                 <key>scale9FromFile</key>
                 <false/>
             </struct>
-            <key type="filename">q.png</key>
+            <key type="filename">154.png</key>
             <struct type="IndividualSpriteSettings">
                 <key>pivotPoint</key>
                 <point_f>0.5,0.5</point_f>
                 <key>scale9Enabled</key>
                 <false/>
                 <key>scale9Borders</key>
-                <rect>64,120,128,240</rect>
+                <rect>7,8,13,15</rect>
                 <key>scale9Paddings</key>
-                <rect>64,120,128,240</rect>
+                <rect>7,8,13,15</rect>
                 <key>scale9FromFile</key>
                 <false/>
             </struct>
