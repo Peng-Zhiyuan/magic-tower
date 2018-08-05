@@ -28,6 +28,12 @@ export default class GameMaster
 
     static OnBattle(player: Player, monster: Monster)
     {
+        let loss = this.calcuBattleLoss(monster)
+        if(loss >= PlayerStatus.hp)
+        {
+            console.log("need hp: " + loss)
+            return;
+        }
         this.doBattleAsync(player, monster)
     }
 
@@ -231,6 +237,32 @@ export default class GameMaster
         }
     }
 
+    static calcuBattleLoss(monster: Monster)
+    {
+        let row = StaticData.getRow(Sheet.Monster, monster.objName)
+        let hp = row["hp"]
+        let atk = row["atk"]
+        let def = row["def"]
+        let playerDmg = PlayerStatus.atk - def
+        if(playerDmg < 0)
+        {
+            playerDmg = 0
+        }
+        let playerNeedAttackTimes = Math.ceil(hp / playerDmg)
+        let monsterAttackTimes = playerNeedAttackTimes - 1
+        if(monsterAttackTimes < 0)
+        {
+            monsterAttackTimes = 0
+        }
+        let monsterDmg = atk - PlayerStatus.def
+        if(monsterDmg < 0)
+        {
+            monsterDmg = 0
+        }
+        let loss = monsterAttackTimes * monsterDmg
+        return loss
+    }
+
     static showingMonsterState: boolean
     static showMonsterState(b: boolean)
     {
@@ -246,23 +278,25 @@ export default class GameMaster
                     let hp = row["hp"]
                     let atk = row["atk"]
                     let def = row["def"]
-                    let playerDmg = PlayerStatus.atk - def
-                    if(playerDmg < 0)
-                    {
-                        playerDmg = 0
-                    }
-                    let playerNeedAttackTimes = Math.ceil(hp / playerDmg)
-                    let monsterAttackTimes = playerNeedAttackTimes - 1
-                    if(monsterAttackTimes < 0)
-                    {
-                        monsterAttackTimes = 0
-                    }
-                    let monsterDmg = atk - PlayerStatus.def
-                    if(monsterDmg < 0)
-                    {
-                        monsterDmg = 0
-                    }
-                    let loss = monsterAttackTimes * monsterDmg
+                    // let playerDmg = PlayerStatus.atk - def
+                    // if(playerDmg < 0)
+                    // {
+                    //     playerDmg = 0
+                    // }
+                    // let playerNeedAttackTimes = Math.ceil(hp / playerDmg)
+                    // let monsterAttackTimes = playerNeedAttackTimes - 1
+                    // if(monsterAttackTimes < 0)
+                    // {
+                    //     monsterAttackTimes = 0
+                    // }
+                    // let monsterDmg = atk - PlayerStatus.def
+                    // if(monsterDmg < 0)
+                    // {
+                    //     monsterDmg = 0
+                    // }
+                    // let loss = monsterAttackTimes * monsterDmg
+                    let loss = this.calcuBattleLoss(monster)
+
                     state.hp = hp
                     state.atk = atk
                     state.def = def
