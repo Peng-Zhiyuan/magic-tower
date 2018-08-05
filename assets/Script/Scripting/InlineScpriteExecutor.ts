@@ -43,6 +43,13 @@ export default class InlineScriptExecutor
                 let value = Number(arg)
                 SL.addGold(value)
             }
+            else if(cmd == "destory")
+            {
+                let argParts = arg.split(",")
+                let indexX = Number(argParts[0])
+                let indexY = Number(argParts[1])
+                SL.destory(indexX, indexY)
+            }
             else if(cmd == "if" || cmd == "elseif")
             {
                 if(arg == this.result)

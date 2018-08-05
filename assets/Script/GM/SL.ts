@@ -27,6 +27,25 @@ export default class SL
         PlayerStatus.exp += value
     }
 
+    // 摧毁指定坐标的对象
+    // 对象必须处于 cha 层
+    // 对象的会被永久摧毁, 即使切换地图也不会复原
+    static async destory(indexX: number, indexY: number)
+    {
+        let token = Board.get("cha", indexX, indexY)
+        if(token != null)
+        {
+            let name = token.obj.objName
+            token.obj.memoryDestory()
+            MapManager.removeObject(token.obj)
+            console.log("[SL] destry: " + name + " in: " + indexX + ", " + indexY )
+        }
+        else
+        {
+            console.log("[SL] destry: nothing found in: " + indexX + ", " + indexY )
+        }
+    }
+
     static async selectAsync(textList: string[]): Promise<string>
     {
         let select = await UIEngine.forwardAsync("select") as Select
