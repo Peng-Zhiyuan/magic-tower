@@ -4,6 +4,7 @@ import Select from "../UI/select/Select";
 import MapManager from "../Core/MapManager";
 import Board from "../Core/Board";
 import MapObject from "../Core/MapObject";
+import PlayerStatus from "./PlayerStatus";
 
 const {ccclass, property} = cc._decorator;
 
@@ -14,6 +15,16 @@ export default class SL
     {
         let dialog = await UIEngine.forwardAsync("dialog") as Dialog
         await dialog.showAsync(spriteFrameList, text)
+    }
+
+    static addGold(value: number)
+    {
+        PlayerStatus.gold += value
+    }
+
+    static addExp(value: number)
+    {
+        PlayerStatus.exp += value
     }
 
     static async selectAsync(textList: string[]): Promise<string>

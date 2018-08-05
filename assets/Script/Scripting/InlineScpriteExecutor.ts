@@ -27,6 +27,16 @@ export default class InlineScriptExecutor
                 let argParts = arg.split(",")
                 this.result = await SL.selectAsync(argParts)
             }
+            else if(cmd == "add_exp")
+            {
+                let value = Number(arg)
+                SL.addExp(value)
+            }
+            else if(cmd == "add_gold")
+            {
+                let value = Number(arg)
+                SL.addGold(value)
+            }
             else if(cmd == "if" || cmd == "elseif")
             {
                 if(arg == this.result)
