@@ -16,6 +16,7 @@ import Token from "../Core/Token";
 import { ObjType } from "../Core/ObjType";
 import ScriptManager from "../Scripting/ScriptManager";
 import Npc from "../Core/Npc";
+import InlineScriptExecutor from "../Scripting/InlineScpriteExecutor";
 
 const {ccclass, property} = cc._decorator;
 
@@ -395,13 +396,18 @@ export default class GameMaster
             else if(obj.type == ObjType.Npc)
             {
                 let script = obj.property["s"]
+                let inlineScript = obj.property["is"]
                 if(script != null)
                 {
                     ScriptManager.run(obj as any as Npc, script)
                 }
-                else
+                if(inlineScript != null)
                 {
-                    console.warn("no script set")
+                    ScriptManager.runInlineScript(obj as any as Npc, inlineScript)
+                }
+                if(script == null && inlineScript == null)
+                {
+                    console.warn("no script or inline-script set!")
                 }
             }
             else if(obj.type == ObjType.Item)

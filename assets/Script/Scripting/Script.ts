@@ -26,14 +26,21 @@ export default class Script
 
     static async outside_warrior(): Promise<void>
     {
+        // 显示对话框
         await SL.dialogAsync(ScriptManager.npc.sprtieFrameList, "Warrior gains an additional 10% ability increase.")
+        // 如果玩家没有职业
         if(PlayerStatus.occupation == Occupation.None)
         {
+            // 宣誓另一个对话框
             await SL.dialogAsync(ScriptManager.npc.sprtieFrameList, "Take occupation as warrier?")
+            // 显示选择框
             let result = await SL.selectAsync(["Yes", "No"])
+            // 如果新选择 YES
             if(result == "Yes")
             {
+                // 设置职业是战士
                 PlayerStatus.occupation = Occupation.Warrior
+                // 摧毁所有围栏
                 this.destroyAllFence()
             }
         }

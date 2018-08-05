@@ -1,5 +1,6 @@
 import Script from "./Script";
 import Npc from "../Core/Npc";
+import InlineScriptExecutor from "./InlineScpriteExecutor";
 
 const {ccclass, property} = cc._decorator;
 
@@ -8,7 +9,7 @@ export default class ScriptManager
 {
     static npc: Npc
 
-    static async run(npc: Npc, name: string): Promise<void>
+    static run(npc: Npc, name: string)
     {
         this.npc = npc
         let fun = Script[name]
@@ -22,5 +23,11 @@ export default class ScriptManager
             //await fun()
             Script[name]()
         }
+    }
+
+    static runInlineScript(npc: Npc, is: string)
+    {
+        this.npc = npc
+        InlineScriptExecutor.executeAsync(is)
     }
 }
