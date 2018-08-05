@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <map version="1.0" tiledversion="1.1.5" orientation="orthogonal" renderorder="right-down" width="10" height="15" tilewidth="32" tileheight="32" infinite="0" nextobjectid="51">
   <tileset firstgid="1" source="Tile.tsx" />
   <layer name="terrian" width="10" height="15">
@@ -42,7 +42,6 @@
   <objectgroup name="info">
     <object id="39" name="outside_warrior" type="obj" x="79" y="335">
       <properties>
-        
         <property name="t" value="obj" />
       </properties>
       <point />

@@ -5,6 +5,8 @@ import MapManager from "../Core/MapManager";
 import Board from "../Core/Board";
 import MapObject from "../Core/MapObject";
 import PlayerStatus from "./PlayerStatus";
+import StaticData from "../StaticData/StaticData";
+import ObjectCreator from "../Core/ObjectCreator";
 
 const {ccclass, property} = cc._decorator;
 
@@ -44,6 +46,11 @@ export default class SL
         {
             console.log("[SL] destry: nothing found in: " + indexX + ", " + indexY )
         }
+    }
+
+    static create(ObjName: string, indexX: number, indexY: number)
+    {
+        MapManager.createByName(indexX, indexY, ObjName)
     }
 
     static async selectAsync(textList: string[]): Promise<string>

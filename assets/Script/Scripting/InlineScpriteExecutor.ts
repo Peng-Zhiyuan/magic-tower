@@ -50,6 +50,14 @@ export default class InlineScriptExecutor
                 let indexY = Number(argParts[1])
                 SL.destory(indexX, indexY)
             }
+            else if(cmd == "create")
+            {
+                let argParts = arg.split(",")
+                let objName = argParts[0]
+                let indexX = Number(argParts[1])
+                let indexY = Number(argParts[2])
+                SL.create(objName, indexX, indexY)
+            }
             else if(cmd == "if" || cmd == "elseif")
             {
                 if(arg == this.result)

@@ -1,8 +1,8 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <map version="1.0" tiledversion="2018.06.01" orientation="orthogonal" renderorder="right-down" width="10" height="15" tilewidth="32" tileheight="32" infinite="0" nextlayerid="4" nextobjectid="5">
- <tileset firstgid="1" source="Tile.tsx"/>
- <layer id="1" name="terrian" width="10" height="15">
-  <data encoding="csv">
+  <tileset firstgid="1" source="Tile.tsx" />
+  <layer id="1" name="terrian" width="10" height="15">
+    <data encoding="csv">
 69,69,69,69,69,69,69,69,69,69,
 69,69,69,69,69,69,69,69,69,69,
 69,69,69,69,69,69,69,69,69,69,
@@ -19,9 +19,9 @@
 69,69,69,69,69,69,69,69,69,69,
 69,69,69,69,69,69,69,69,69,69
 </data>
- </layer>
- <layer id="2" name="cha" width="10" height="15">
-  <data encoding="csv">
+  </layer>
+  <layer id="2" name="cha" width="10" height="15">
+    <data encoding="csv">
 62,80,0,126,68,0,68,122,0,122,
 68,68,68,0,68,0,68,0,122,0,
 0,0,126,0,68,0,68,0,0,0,
@@ -38,19 +38,19 @@
 0,0,0,0,68,0,68,0,0,0,
 0,0,0,0,68,0,68,0,0,0
 </data>
- </layer>
- <objectgroup id="3" name="info">
-  <object id="1" name="up_born" x="175" y="236">
-   <properties>
-    <property name="t" value="up_born"/>
-   </properties>
-   <point/>
-  </object>
-  <object id="2" name="down_born" x="204" y="234">
-   <properties>
-    <property name="t" value="down_born"/>
-   </properties>
-   <point/>
-  </object>
- </objectgroup>
+  </layer>
+  <objectgroup id="3" name="info">
+    <object id="1" name="up_born" x="175" y="236">
+      <properties>
+        <property name="t" value="up_born" />
+      </properties>
+      <point />
+    </object>
+    <object id="2" name="down_born" x="204" y="234">
+      <properties>
+        <property name="t" value="down_born" />
+      </properties>
+      <point />
+    </object>
+  </objectgroup>
 </map>

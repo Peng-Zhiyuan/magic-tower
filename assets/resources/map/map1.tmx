@@ -1,8 +1,8 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <map version="1.0" tiledversion="2018.06.01" orientation="orthogonal" renderorder="right-down" width="10" height="15" tilewidth="32" tileheight="32" infinite="0" nextlayerid="5" nextobjectid="51">
- <tileset firstgid="1" source="Tile.tsx"/>
- <layer id="1" name="terrian" width="10" height="15">
-  <data encoding="csv">
+  <tileset firstgid="1" source="Tile.tsx" />
+  <layer id="1" name="terrian" width="10" height="15">
+    <data encoding="csv">
 69,69,69,69,69,69,69,69,69,69,
 69,69,69,69,69,69,69,69,69,69,
 69,69,69,69,69,69,69,69,69,69,
@@ -19,9 +19,9 @@
 69,69,69,69,69,69,69,69,69,69,
 69,69,69,69,69,69,69,69,69,69
 </data>
- </layer>
- <layer id="2" name="cha" width="10" height="15">
-  <data encoding="csv">
+  </layer>
+  <layer id="2" name="cha" width="10" height="15">
+    <data encoding="csv">
 50,50,50,50,172,56,50,50,50,50,
 50,50,50,50,0,172,50,50,50,50,
 50,50,50,50,0,172,50,50,50,50,
@@ -38,47 +38,47 @@
 172,68,68,172,0,172,172,68,68,172,
 172,172,172,172,0,172,172,172,172,172
 </data>
- </layer>
- <objectgroup id="3" name="info">
-  <object id="39" name="outside_warrior" type="obj" x="79" y="335">
-   <properties>
-    <property name="s" value="outside_warrior"/>
-    <property name="t" value="obj"/>
-   </properties>
-   <point/>
-  </object>
-  <object id="40" name="outside_thief" type="obj" x="238.5" y="332">
-   <properties>
-    <property name="s" value="outside_thief"/>
-    <property name="t" value="obj"/>
-   </properties>
-   <point/>
-  </object>
-  <object id="41" name="outside_3" type="obj" x="79.5" y="398.5">
-   <properties>
-    <property name="s" value="outside_3"/>
-    <property name="t" value="obj"/>
-   </properties>
-   <point/>
-  </object>
-  <object id="42" name="outside_4" type="obj" x="243" y="399.5">
-   <properties>
-    <property name="s" value="outside_4"/>
-    <property name="t" value="obj"/>
-   </properties>
-   <point/>
-  </object>
-  <object id="48" type="up_born" x="142" y="454">
-   <properties>
-    <property name="t" value="up_born"/>
-   </properties>
-   <point/>
-  </object>
-  <object id="49" type="down_born" x="173" y="40">
-   <properties>
-    <property name="t" value="down_born"/>
-   </properties>
-   <point/>
-  </object>
- </objectgroup>
+  </layer>
+  <objectgroup id="3" name="info">
+    <object id="39" name="outside_warrior" type="obj" x="79" y="335">
+      <properties>
+        <property name="s" value="outside_warrior" />
+        <property name="t" value="obj" />
+      </properties>
+      <point />
+    </object>
+    <object id="40" name="outside_thief" type="obj" x="238.5" y="332">
+      <properties>
+        <property name="s" value="outside_thief" />
+        <property name="t" value="obj" />
+      </properties>
+      <point />
+    </object>
+    <object id="41" name="outside_3" type="obj" x="79.5" y="398.5">
+      <properties>
+        <property name="s" value="outside_3" />
+        <property name="t" value="obj" />
+      </properties>
+      <point />
+    </object>
+    <object id="42" name="outside_4" type="obj" x="243" y="399.5">
+      <properties>
+        <property name="s" value="outside_4" />
+        <property name="t" value="obj" />
+      </properties>
+      <point />
+    </object>
+    <object id="48" type="up_born" x="142" y="454">
+      <properties>
+        <property name="t" value="up_born" />
+      </properties>
+      <point />
+    </object>
+    <object id="49" type="down_born" x="173" y="40">
+      <properties>
+        <property name="t" value="down_born" />
+      </properties>
+      <point />
+    </object>
+  </objectgroup>
 </map>

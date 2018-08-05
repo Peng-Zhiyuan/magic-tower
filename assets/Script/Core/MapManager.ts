@@ -177,6 +177,19 @@ export default class MapManager
         }
     }
 
+    public static createByName(indexX: number, indexY: number, objName: string)
+    {
+        let layer = this.map.getLayer("cha")
+
+        let obj = ObjectCreator.createByName(objName)
+        this.addObj(layer, indexX, indexY, obj.node)
+        obj.layer = layer
+
+        obj.generateToken(objName)
+        let layerName = layer.getLayerName()
+        Board.set(layerName, indexX, indexY, obj.token)
+    }
+
     private static createObjByParseInfo(layer: cc.TiledLayer, indexX: number, indexY: number, parseInfo: GIDParseInfo): MapObject
     {
         let obj = ObjectCreator.createByParseInfo(parseInfo)

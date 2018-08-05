@@ -123,7 +123,40 @@ export default class ObjectCreator
         }
     }
 
-    private static createMonster(name: string): Monster
+    static createByName(objName: string): MapObject
+    {
+        {
+            let sheet = StaticData.getSheet(Sheet.Monster)
+            if(sheet[objName] != null)
+            {   
+                return ObjectCreator.createMonster(objName);
+            }
+        }
+        {
+            let sheet = StaticData.getSheet(Sheet.Item)
+            if(sheet[objName] != null)
+            {   
+                return ObjectCreator.createItem(objName);
+            }
+        }
+        {
+            let sheet = StaticData.getSheet(Sheet.Specail)
+            if(sheet[objName] != null)
+            {   
+                return ObjectCreator.createSpecail(objName);
+            }
+        }
+        {
+            let sheet = StaticData.getSheet(Sheet.Npc)
+            if(sheet[objName] != null)
+            {   
+                return ObjectCreator.createNpc(objName);
+            }
+        }
+        return null
+    }
+
+    public static createMonster(name: string): Monster
     {
         // create node
         let prefab = this.prefabMapping["monster"]
@@ -146,7 +179,7 @@ export default class ObjectCreator
         return monster
     }
 
-    private static createItem(name: string): Item
+    public static createItem(name: string): Item
     {
         // create node
         let prefab = this.prefabMapping["item"]
@@ -177,7 +210,7 @@ export default class ObjectCreator
         return player
     }
 
-    private static createSpecail(name: string): Specail
+    public static createSpecail(name: string): Specail
     {
         // create node
         let prefab = this.prefabMapping["specail"]
@@ -194,7 +227,7 @@ export default class ObjectCreator
         return specail
     }
 
-    private static createNpc(name: string): Npc
+    public static createNpc(name: string): Npc
     {
         // create node
         let prefab = this.prefabMapping["npc"]
