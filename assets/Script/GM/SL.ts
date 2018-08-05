@@ -53,6 +53,19 @@ export default class SL
         MapManager.createByName(indexX, indexY, ObjName)
     }
 
+    static move(indexX: number, indexY: number, targetIndexX: number, targetIndexY: number)
+    {
+        let token = Board.get("cha", indexX, indexY);
+        if(token != null)
+        {
+            MapManager.moveObject(token.obj, targetIndexX, targetIndexY)
+        }
+        else
+        {
+            console.log("[SL] move: nothing found in: " + indexX + ", " + indexY )
+        }
+    }
+
     static async selectAsync(textList: string[]): Promise<string>
     {
         let select = await UIEngine.forwardAsync("select") as Select

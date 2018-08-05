@@ -58,6 +58,15 @@ export default class InlineScriptExecutor
                 let indexY = Number(argParts[2])
                 SL.create(objName, indexX, indexY)
             }
+            else if(cmd == "move")
+            {
+                let argParts = arg.split(",")
+                let indexX = Number(argParts[0])
+                let indexY = Number(argParts[1])
+                let targetIndexX = Number(argParts[2])
+                let targetIndexY = Number(argParts[3])
+                SL.move(indexX, indexY, targetIndexX, targetIndexY)
+            }
             else if(cmd == "if" || cmd == "elseif")
             {
                 if(arg == this.result)
