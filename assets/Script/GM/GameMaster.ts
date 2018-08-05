@@ -44,6 +44,7 @@ export default class GameMaster
         let atk = row["atk"]
         let def = row["def"]
         let exp = row["exp"]
+        let gold = row["gold"]
 
         // set monster sprite
         page.enemySpriteFrameList = monster.sprtieFrameList
@@ -143,6 +144,9 @@ export default class GameMaster
 
             // add exp
             this.addExp(exp)
+
+            // add gold
+            this.addGold(gold)
         }
         else
         {
@@ -304,6 +308,11 @@ export default class GameMaster
             PlayerStatus.atk += this.CalcuBuff(atk_grouth)
             PlayerStatus.def += this.CalcuBuff(def_grouth)
         }
+    }
+
+    static addGold(value: number)
+    {
+        PlayerStatus.gold += value;
     }
 
     static movePlayer(arrow: Arrow)

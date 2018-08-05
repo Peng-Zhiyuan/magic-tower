@@ -24,6 +24,8 @@ export default class StatusPanel extends cc.Component {
     key_red: cc.Label = null;
     @property(cc.Label)
     lable_exp: cc.Label = null;
+    @property(cc.Label)
+    lable_gold: cc.Label = null;
 
     _hp: number
     set hp(value: number)
@@ -163,6 +165,17 @@ export default class StatusPanel extends cc.Component {
         this.lable_exp.string = value + "/100"
     }
 
+    _gold: number
+    set gold(value: number)
+    {
+        if(value == this._gold)
+        {
+            return
+        }
+        this._gold = value
+        this.lable_gold.string = "Gold: " + value
+    }
+
     update()
     {
         this.hp = PlayerStatus.hp
@@ -174,6 +187,7 @@ export default class StatusPanel extends cc.Component {
         this.redKey = PlayerStatus.key_red
         this.exp = PlayerStatus.exp
         this.level = PlayerStatus.level
+        this.gold = PlayerStatus.gold
         if(this.occu == Occupation.None)
         {
             this.lable_exp.node.active = false

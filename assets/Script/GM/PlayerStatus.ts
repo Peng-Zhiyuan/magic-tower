@@ -14,6 +14,7 @@ export default class PlayerStatus
     static key_red: number = 0
     static exp: number = 0
     static level: number = 0
+    static gold: number = 0
 
     static reset()
     {
@@ -30,6 +31,7 @@ export default class PlayerStatus
         this.key_red = 0
         this.exp = 0
         this.level = 1
+        this.gold = 0
     }
 
     static isKeyEnouph(keyList: string[])
