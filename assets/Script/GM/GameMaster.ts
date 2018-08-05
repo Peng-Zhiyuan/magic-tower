@@ -171,6 +171,7 @@ export default class GameMaster
     static async loadMap(map: number, isDown: boolean)
     {
         let path = "map/map" + map
+        //path = "map/test"
         await MapManager.loadAsync(path, isDown)
     }
     
