@@ -9,11 +9,12 @@ export default class InlineScriptExecutor
     static result: string
     static async executeAsync(is: string)
     {
-        let list = is.split("\n")
+        let list = is.split("\\n")
         for (var i = 0; i < list.length; i++)
         {
             let line = list[i]
             console.log("[IS] " + line)
+            line = line.trim()
             let parts = line.split(" ")
             let cmd = parts[0]
             let arg = parts[1]
@@ -36,6 +37,7 @@ export default class InlineScriptExecutor
                     for(var j = i + 1; j < list.length; j++)
                     {
                         let peekLine = list[j]
+                        peekLine = peekLine.trim()
                         let parts = peekLine.split(" ")
                         let cmd = parts[0]
                         let arg = parts[1]
@@ -55,6 +57,7 @@ export default class InlineScriptExecutor
                                 {
                                     del = true
                                     list.splice(j, 1)
+                                    j--;
                                 }
                             }
                         }
@@ -62,7 +65,8 @@ export default class InlineScriptExecutor
                         {
                             if(cmd != "end")
                             {
-                                list.splice(j, i)
+                                list.splice(j, 1)
+                                j--;
                             }
                         }
                         if(depth == 0)

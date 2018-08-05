@@ -396,7 +396,7 @@ export default class GameMaster
             else if(obj.type == ObjType.Npc)
             {
                 let script = obj.property["s"]
-                let inlineScript = obj.property["is"]
+                let inlineScript = obj.property["_is"]
                 if(script != null)
                 {
                     ScriptManager.run(obj as any as Npc, script)
