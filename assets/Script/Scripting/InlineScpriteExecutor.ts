@@ -94,6 +94,20 @@ export default class InlineScriptExecutor
                 let value = argParts[1]
                 SL.set(name, value)
             }
+            else if(cmd == "add")
+            {
+                let argParts = arg.split(",")
+                let name = argParts[0]
+                let value = Number(argParts[1])
+                SL.add(name, value)
+            }
+            else if(cmd == "sub")
+            {
+                let argParts = arg.split(",")
+                let name = argParts[0]
+                let value = Number(argParts[1])
+                SL.sub(name, value)
+            }
             else if(cmd == "if" || cmd == "elseif")
             {
                 if(arg == this.result)
