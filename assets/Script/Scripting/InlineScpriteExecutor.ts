@@ -4,6 +4,7 @@ import PlayerStatus from "../GM/PlayerStatus";
 import { Occupation } from "../GM/Occupation";
 import MapManager from "../Core/MapManager";
 import AsyncUtil from "../../Subsystems/-BaseKit/AsyncUtil";
+import Script from "./Script";
 
 export default class InlineScriptExecutor
 {
@@ -22,12 +23,18 @@ export default class InlineScriptExecutor
             if(cmd == "dialog")
             {
                 let allarg = arg
-                for(let j = 2; j <= parts.length; j++)
+                for(let j = 2; j < parts.length; j++)
                 {
-                    let a = parts[i]
+                    let a = parts[j]
                     allarg = allarg + " " + a
                 }
-                await SL.dialogAsync(ScriptManager.npc.sprtieFrameList, allarg)
+                let spriteFrameList = []
+                let currentNpc = ScriptManager.npc
+                if(currentNpc != null)
+                {
+                    spriteFrameList = currentNpc.sprtieFrameList
+                }
+                await SL.dialogAsync(spriteFrameList, allarg)
             }
             else if(cmd == "select")
             {
@@ -107,6 +114,20 @@ export default class InlineScriptExecutor
                 let name = argParts[0]
                 let value = Number(argParts[1])
                 SL.sub(name, value)
+            }
+            else if(cmd == "call")
+            {
+                let funName = arg
+                let fun = Script[name]
+                if(fun == null)
+                {
+                    console.warn("script '" + name + "' not found")
+                }
+                else
+                {
+                    //await fun()
+                    await Script[funName]()
+                }
             }
             else if(cmd == "if" || cmd == "elseif")
             {

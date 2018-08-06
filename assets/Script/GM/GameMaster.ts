@@ -18,6 +18,7 @@ import ScriptManager from "../Scripting/ScriptManager";
 import Npc from "../Core/Npc";
 import InlineScriptExecutor from "../Scripting/InlineScpriteExecutor";
 import GameManifest from "../../Subsystems/-GameManifest/GameManifest";
+import MapEventManager from "../Core/MapEventManager";
 
 const {ccclass, property} = cc._decorator;
 
@@ -146,8 +147,8 @@ export default class GameMaster
             monster.memoryDestory()
             MapManager.removeObject(monster)
 
-            // move data
-            MapManager.moveObject(player, monsterX, monsterY)
+            // move plaer
+            // MapManager.moveObject(player, monsterX, monsterY)
 
             // add exp
             this.addExp(exp)
@@ -387,17 +388,7 @@ export default class GameMaster
                 let row = StaticData.getRow(Sheet.Specail, obj.objName)
                 //let change_map = row["change_map"] as string
                 let dec_item_to_destroy = row["dec_item_to_destroy"] as string
-                // if(change_map != "")
-                // {
-                //     if(change_map == "NEXT")
-                //     {
-                //         GameMaster.nextMapAsync()
-                //     }
-                //     else
-                //     {
-                //         GameMaster.previousMapAsync()
-                //     }
-                // }
+
                 if(dec_item_to_destroy != "")
                 {
                     let list = dec_item_to_destroy.split(",")
@@ -430,19 +421,14 @@ export default class GameMaster
             }
             else if(obj.type == ObjType.Npc)
             {
-                let script = obj.property["s"]
-                let inlineScript = obj.property["_is"]
+                let script = obj.property["_script"]
                 if(script != null)
                 {
-                    ScriptManager.run(obj as any as Npc, script)
+                    ScriptManager.runInlineScript(obj as any as Npc, script)
                 }
-                if(inlineScript != null)
+                else
                 {
-                    ScriptManager.runInlineScript(obj as any as Npc, inlineScript)
-                }
-                if(script == null && inlineScript == null)
-                {
-                    console.warn("no script or inline-script set!")
+                    console.warn("no _script set!")
                 }
             }
             else if(obj.type == ObjType.Item)
@@ -453,6 +439,14 @@ export default class GameMaster
         else
         {
             MapManager.moveObject(MapManager.player, targetX, targetY)
+
+            // check event
+            let event = MapEventManager.getFromIndexDic(targetX, targetY)
+            if(event != null)
+            {
+                let script = event.script
+                InlineScriptExecutor.executeAsync(script)
+            }
         }
     }  
 

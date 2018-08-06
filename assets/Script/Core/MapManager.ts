@@ -6,6 +6,9 @@ import MapObject from "./MapObject";
 import BoardIndex from "./BoardLocation";
 import BoardLocation from "./BoardLocation";
 import Player from "./Player";
+import MapEvent from "./MapEvent";
+import EventManager from "./MapEventManager";
+import MapEventManager from "./MapEventManager";
 
 
 export default class MapManager
@@ -38,6 +41,9 @@ export default class MapManager
             root.destroy()
         }
         this.layerToObjectRoot = {}
+
+        // reset map event
+        MapEventManager.reset()
 
         // reset born-point info
         this.bornPoint = {}
@@ -176,6 +182,18 @@ export default class MapManager
                     location.indexX = indexX
                     location.indexY = indexY
                     this.bornPoint[name] = location
+                }
+                else if(type == "event")
+                {
+                    let name = property["name"]
+                    let script = property["_script"]
+                    let event = new MapEvent()
+                    event.name = name
+                    event.script = script
+                    event.indexX = indexX
+                    event.indexY = indexY
+                    event.rawProperty = property
+                    EventManager.Add(event)
                 }
 
             }
