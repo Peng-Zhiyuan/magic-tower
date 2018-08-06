@@ -54,27 +54,16 @@ export default class Monster extends MapObject
     
     onEnterMap()
     {
-        let a = Memory.getCurrentMapMemory()
-        let objMemo = a[this.idInMap]
-        if(objMemo != null)
+        var destroy = Memory.getObj(null, this.id, "destory", false)
+        if(destroy)
         {
-            if(objMemo["destory"])
-            {
-                MapManager.removeObject(this)
-            }
+            MapManager.removeObject(this)
         }
     }
 
     memoryDestory()
     {
-        let memory = Memory.getCurrentMapMemory()
-        let objMemo = memory[this.idInMap]
-        if(objMemo == null)
-        {
-            objMemo = {}
-            memory[this.idInMap] = objMemo
-        }
-        objMemo["destory"] = true
+        Memory.setObj(null, this.id, "destroy", true)
     }
 
     showStat(b: boolean)

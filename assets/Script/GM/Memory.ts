@@ -1,27 +1,137 @@
 import GameMaster from "./GameMaster";
+import MapMemory from "./MapMemory";
 
 export default class Memory
 {
-    static mapMemoryDic: {[mapName: string]: {}} = {}
+    static mapMemoryDic: {[mapName: string]: MapMemory} = {}
     static globleMemory = {}
 
-    static getMapMemmory(mapName: string)
+    static getObj(mapName: string, objId: string, key: string, _default: any)
     {
-        let memory = this.mapMemoryDic[mapName]
-        if(memory == null)
+        if(mapName == null)
         {
-            memory = {}
-            memory["map"] = mapName
-            this.mapMemoryDic[mapName] = memory
+            mapName = GameMaster.currentMap
         }
-        return memory
+        let map = this.mapMemoryDic[mapName]
+        if(map == null)
+        {
+            return _default
+        }
+        let obj = map.objectDic[objId]
+        if(obj == null)
+        {
+            return _default
+        }
+        let value = obj[key]
+        if(value == null)
+        {
+            return _default
+        }
+        return value
     }
 
-    static getCurrentMapMemory(): Object
+    static setObj(mapName: string, objId: string, key: string, value: any)
     {
-        let mapIndex = GameMaster.currentMap
-        //let mapIndex = 0
-        return this.getMapMemmory(mapIndex)
+        if(mapName == null)
+        {
+            mapName = GameMaster.currentMap
+        }
+        let map = this.mapMemoryDic[mapName]
+        if(map == null)
+        {
+            map = new MapMemory()
+            this.mapMemoryDic[mapName] = map
+        }
+        let obj = map.objectDic[objId]
+        if(obj == null)
+        {
+            obj = {}
+            map[objId] = obj
+        }
+        obj[key] = value
+    }
+
+    static deleteObj(mapName: string, objId: string, key: string)
+    {
+        if(mapName == null)
+        {
+            mapName = GameMaster.currentMap
+        }
+        let map = this.mapMemoryDic[mapName]
+        if(map == null)
+        {
+            return
+        }
+        let obj = map.objectDic[objId]
+        if(obj == null)
+        {
+            return
+        }
+        delete obj[key]
+    }
+
+    static getEvent(mapName: string, eventId: string, key: string, _default: any)
+    {
+        if(mapName == null)
+        {
+            mapName = GameMaster.currentMap
+        }
+        let map = this.mapMemoryDic[mapName]
+        if(map == null)
+        {
+            return _default
+        }
+        let event = map.eventDic[eventId]
+        if(event == null)
+        {
+            return _default
+        }
+        let value = event[key]
+        if(value == null)
+        {
+            return _default
+        }
+        return value
+    }
+
+    static setEvent(mapName: string, eventId: string, key: string, value: any)
+    {
+        if(mapName == null)
+        {
+            mapName = GameMaster.currentMap
+        }
+        let map = this.mapMemoryDic[mapName]
+        if(map == null)
+        {
+            map = new MapMemory()
+            this.mapMemoryDic[mapName] = map
+        }
+        let event = map.eventDic[eventId]
+        if(event == null)
+        {
+            event = {}
+            map[eventId] = event
+        }
+        event[key] = value
+    }
+
+    static deleteEvent(mapName: string, eventId: string, key: string)
+    {
+        if(mapName == null)
+        {
+            mapName = GameMaster.currentMap
+        }
+        let map = this.mapMemoryDic[mapName]
+        if(map == null)
+        {
+            return
+        }
+        let event = map.eventDic[eventId]
+        if(event == null)
+        {
+            return
+        }
+        delete event[key]
     }
 
     static setGloble(name: string, value: any)
@@ -45,3 +155,4 @@ export default class Memory
         this.globleMemory = {}
     }
 }
+

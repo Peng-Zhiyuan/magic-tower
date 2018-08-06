@@ -92,6 +92,12 @@ export default class MapManager
             }
         })
 
+        // notify event
+        for (let event of EventManager.list) 
+        {
+            event.onEnter()
+        }
+
         Board.print()
 
         // create player
@@ -188,6 +194,7 @@ export default class MapManager
                     let name = property["name"]
                     let script = property["_script"]
                     let event = new MapEvent()
+                    event.id = name
                     event.name = name
                     event.script = script
                     event.indexX = indexX
@@ -220,6 +227,9 @@ export default class MapManager
         let obj = ObjectCreator.createByParseInfo(parseInfo)
         this.addObj(layer, indexX, indexY, obj.node)
         obj.layer = layer
+
+        let id = indexX + "-" + indexY
+        obj.id = id
 
         obj.generateToken(parseInfo.objName)
         let layerName = layer.getLayerName()

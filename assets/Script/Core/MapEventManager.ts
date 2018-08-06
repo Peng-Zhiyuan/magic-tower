@@ -2,18 +2,24 @@ import MapEvent from "./MapEvent";
 
 export default class MapEventManager
 {
+    static idDic: {[id: string]: MapEvent}
     static nameDic: {[name: string]: MapEvent}
     static indexDic: MapEvent[][] = []
+    static list: MapEvent[] = []
 
     static reset()
     {
+        this.idDic = {}
         this.nameDic = {}
         this.indexDic = []
+        this.list = []
     }
 
     static Add(event: MapEvent)
     {
+        this.list.push(event)
         this.nameDic[event.name] = event
+        this.idDic[event.id] = event
         this.setToIndexDic(event.indexX, event.indexY, event)
     }
 

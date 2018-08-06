@@ -444,8 +444,12 @@ export default class GameMaster
             let event = MapEventManager.getFromIndexDic(targetX, targetY)
             if(event != null)
             {
-                let script = event.script
-                InlineScriptExecutor.executeAsync(script)
+                if(!event.forbid)
+                {
+                    let script = event.script
+                    InlineScriptExecutor.executeAsync(script)
+                    event.setAndMemoryForbid(true)
+                }
             }
         }
     }  
