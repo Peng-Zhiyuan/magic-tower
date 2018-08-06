@@ -5,6 +5,7 @@ import { Occupation } from "../GM/Occupation";
 import MapManager from "../Core/MapManager";
 import AsyncUtil from "../../Subsystems/-BaseKit/AsyncUtil";
 import Script from "./Script";
+import Memory from "../GM/Memory";
 
 export default class InlineScriptExecutor
 {
@@ -16,7 +17,26 @@ export default class InlineScriptExecutor
         {
             let line = list[i]
             console.log("[IS] " + line)
+
+            // 预处理
             line = line.trim()
+            let start = line.indexOf("${")
+            while(start != null && start != -1)
+            {
+                let end = line.indexOf("}", start)
+                if(end == null || end == -1)
+                {
+                    throw "script error"
+                }
+                var left = line.substr(0, start)
+                var variable = line.substr(start + 2, end - start - 2)
+                var value = Memory.getGloble(variable, "")
+                var right = line.substr(end + 1, line.length - end - 2)
+                line = left + value + right
+                console.log("[IS] > " + line)
+                start = line.indexOf("${")
+            }
+
             let parts = line.split(" ")
             let cmd = parts[0]
             let arg = parts[1]

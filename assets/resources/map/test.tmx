@@ -65,8 +65,8 @@ create bat,1,1</property>
   </object>
   <object id="7" name="event" x="146" y="241">
    <properties>
-    <property name="_script" value="dialog dialog\ndialog dialog"/>
-    <property name="script">dialog dialog
+    <property name="_script" value="set a,aaa\ndialog ${a}\ndialog dialog"/>
+    <property name="script">dialog ${a}
 dialog dialog</property>
     <property name="type" value="event"/>
    </properties>
