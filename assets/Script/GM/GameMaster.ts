@@ -17,6 +17,7 @@ import { ObjType } from "../Core/ObjType";
 import ScriptManager from "../Scripting/ScriptManager";
 import Npc from "../Core/Npc";
 import InlineScriptExecutor from "../Scripting/InlineScpriteExecutor";
+import GameManifest from "../../Subsystems/-GameManifest/GameManifest";
 
 const {ccclass, property} = cc._decorator;
 
@@ -166,25 +167,14 @@ export default class GameMaster
         this.refreshMonsterState()
     }
 
-    static currentMap: number = 0
+    static currentMap: string
 
-    static async loadMap(map: number, isDown: boolean)
+    static async loadMap(map: string, bornPointName: string)
     {
-        let path = "map/map" + map
-        path = "map/test"
-        await MapManager.loadAsync(path, isDown)
-    }
-    
-    static async nextMapAsync()
-    {
-        this.currentMap += 1
-        await this.loadMap(this.currentMap, false)
-    }
-
-    static async previousMapAsync()
-    {
-        this.currentMap -= 1
-        await this.loadMap(this.currentMap, true)
+        this.currentMap = map
+        console.log("[GameMaster] load map " + map)
+        let path = "map/" + map;
+        await MapManager.loadAsync(path, bornPointName)
     }
 
     static OnPickItem(player: Player, item: Item)
@@ -226,8 +216,9 @@ export default class GameMaster
         this.inBattle = false
         Memory.reset()
         PlayerStatus.reset()
-        this.currentMap = 0
-        this.nextMapAsync()
+        let mainMap = GameManifest.get("main-map");
+        let bornPoint = GameManifest.get("main-map-born-point");
+        this.loadMap(mainMap, bornPoint)
     }
     
     static refreshMonsterState()
@@ -394,19 +385,19 @@ export default class GameMaster
             {
                 // TODO: ...
                 let row = StaticData.getRow(Sheet.Specail, obj.objName)
-                let change_map = row["change_map"] as string
+                //let change_map = row["change_map"] as string
                 let dec_item_to_destroy = row["dec_item_to_destroy"] as string
-                if(change_map != "")
-                {
-                    if(change_map == "NEXT")
-                    {
-                        GameMaster.nextMapAsync()
-                    }
-                    else
-                    {
-                        GameMaster.previousMapAsync()
-                    }
-                }
+                // if(change_map != "")
+                // {
+                //     if(change_map == "NEXT")
+                //     {
+                //         GameMaster.nextMapAsync()
+                //     }
+                //     else
+                //     {
+                //         GameMaster.previousMapAsync()
+                //     }
+                // }
                 if(dec_item_to_destroy != "")
                 {
                     let list = dec_item_to_destroy.split(",")

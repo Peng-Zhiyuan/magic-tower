@@ -10,6 +10,7 @@ import TaskExecutor, { Task } from "../Subsystems/-TaskExecutor/TaskExecutor";
 import GameMaster from "./GM/GameMaster";
 import UpdateManager from "../Subsystems/-BaseKit/UpdateManager";
 import Time from "../Subsystems/-BaseKit/Time";
+import GameManifest from "../Subsystems/-GameManifest/GameManifest";
 
 const {ccclass, property} = cc._decorator;
 
@@ -44,6 +45,7 @@ export default class Game extends cc.Component {
         // task list
         let taskList: Task[] =
         [
+            { name: "game-manifest", func: () => GameManifest.loadAsync()},
             { name: "ui-engine", func: () => UIEngine.preloadResAsync()},
             { name: "static-data", func: () => StaticData.initAsync()},
             { name: "sprite-library", func: () => SpriteLibrary.initAsync()},

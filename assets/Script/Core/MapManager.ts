@@ -14,6 +14,7 @@ export default class MapManager
     static layerToObjectRoot: {[name: string]: cc.Node}
     static upBorn: BoardIndex = new BoardLocation()
     static downBorn: BoardIndex = new BoardLocation()
+    static bornPoint: {[name: string]: BoardLocation}
     static player: Player
 
     static init()
@@ -21,7 +22,7 @@ export default class MapManager
         this.map = cc.find("Canvas/map").getComponent(cc.TiledMap)
     }
 
-    static async loadAsync(mapPath: string, isDown: boolean)
+    static async loadAsync(mapPath: string, bornPointName: string)
     {
         // log
         console.log("[MapManager] load " + mapPath)
@@ -37,6 +38,9 @@ export default class MapManager
             root.destroy()
         }
         this.layerToObjectRoot = {}
+
+        // reset born-point info
+        this.bornPoint = {}
 
         // set map component
         let mapAsset = await ResUtil.loadRes<cc.TiledMapAsset>(mapPath)
@@ -85,15 +89,15 @@ export default class MapManager
         Board.print()
 
         // create player
-        if(isDown)
+        let bornPoint = this.bornPoint[bornPointName]
+        if(bornPoint == null)
         {
-            let layer = this.map.getLayer("cha")
-            this.player = this.createPlayer(layer, this.downBorn.indexX, this.downBorn.indexY)
+            console.warn("born-point " + bornPointName + " not found in map " + mapPath + ", not create player.")
         }
         else
         {
             let layer = this.map.getLayer("cha")
-            this.player = this.createPlayer(layer, this.upBorn.indexX, this.upBorn.indexY)
+            this.player = this.createPlayer(layer, bornPoint.indexX, bornPoint.indexY)
         }
     }
 
@@ -144,7 +148,12 @@ export default class MapManager
                 let y = infoObj.offset["y"]
                 let indexX = Math.floor(x / cellWidth)
                 let indexY = Math.floor(y / cellHeight)
-                let type = infoObj["_properties"]["t"]
+                let property = infoObj["_properties"]
+                let type = property["t"]
+                if(type == null)
+                {
+                    type = property["type"]
+                }
                 if(type == "obj")
                 {
                     // 这个信息是需要附加到一个对象上的
@@ -160,15 +169,13 @@ export default class MapManager
                         console.warn("tile object info not font a map object to attach: (" + indexX + ", " + indexY + ")")
                     }
                 }
-                else if(type == "up_born")
+                else if(type == "born_point")
                 {
-                    this.upBorn.indexX = indexX
-                    this.upBorn.indexY = indexY
-                }
-                else if(type == "down_born")
-                {
-                    this.downBorn.indexX = indexX
-                    this.downBorn.indexY = indexY
+                    let name = property["name"]
+                    let location = new BoardLocation()
+                    location.indexX = indexX
+                    location.indexY = indexY
+                    this.bornPoint[name] = location
                 }
 
             }

@@ -7,6 +7,7 @@ import MapObject from "../Core/MapObject";
 import PlayerStatus from "./PlayerStatus";
 import StaticData from "../StaticData/StaticData";
 import ObjectCreator from "../Core/ObjectCreator";
+import GameMaster from "./GameMaster";
 
 const {ccclass, property} = cc._decorator;
 
@@ -27,6 +28,11 @@ export default class SL
     static addExp(value: number)
     {
         PlayerStatus.exp += value
+    }
+
+    static changeMap(name: string, bornPointName: string)
+    {
+         GameMaster.loadMap(name, bornPointName)
     }
 
     // 摧毁指定坐标的对象
