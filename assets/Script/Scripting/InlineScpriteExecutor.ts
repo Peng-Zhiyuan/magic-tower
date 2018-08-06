@@ -34,12 +34,12 @@ export default class InlineScriptExecutor
                 let argParts = arg.split(",")
                 this.result = await SL.selectAsync(argParts)
             }
-            else if(cmd == "add_exp")
+            else if(cmd == "add-exp")
             {
                 let value = Number(arg)
                 SL.addExp(value)
             }
-            else if(cmd == "add_gold")
+            else if(cmd == "add-gold")
             {
                 let value = Number(arg)
                 SL.addGold(value)
@@ -72,6 +72,13 @@ export default class InlineScriptExecutor
             {
                 let seconds = Number(arg)
                 await AsyncUtil.waiteAsync(seconds)
+            }
+            else if(cmd == "change-map")
+            {
+                let argParts = arg.split(",")
+                let name = argParts[0]
+                let borinPoint = argParts[1]
+                await SL.changeMapAsync(name, borinPoint)
             }
             else if(cmd == "if" || cmd == "elseif")
             {
