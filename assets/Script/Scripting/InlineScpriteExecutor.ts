@@ -149,6 +149,78 @@ export default class InlineScriptExecutor
                     await Script[funName]()
                 }
             }
+            else if(cmd == "juge")
+            {
+                let left = Number(parts[1])
+                let op = parts[2]
+                let right = Number(parts[3])
+                if(op == "<")
+                {
+                    if(left < right)
+                    {
+                        this.result = "yes"
+                    }
+                    else
+                    {
+                        this.result = "no"
+                    }
+                }
+                else if(op == "==")
+                {
+                    if(left == right)
+                    {
+                        this.result = "yes"
+                    }
+                    else
+                    {
+                        this.result = "no"
+                    }
+                }
+                else if(op == ">")
+                {
+                    if(left > right)
+                    {
+                        this.result = "yes"
+                    }
+                    else
+                    {
+                        this.result = "no"
+                    }
+                }
+                else if(op == "!=")
+                {
+                    if(left != right)
+                    {
+                        this.result = "yes"
+                    }
+                    else
+                    {
+                        this.result = "no"
+                    }
+                }
+                else if(op == ">=")
+                {
+                    if(left >= right)
+                    {
+                        this.result = "yes"
+                    }
+                    else
+                    {
+                        this.result = "no"
+                    }
+                }
+                else if(op == "<=")
+                {
+                    if(left <= right)
+                    {
+                        this.result = "yes"
+                    }
+                    else
+                    {
+                        this.result = "no"
+                    }
+                }
+            }
             else if(cmd == "if" || cmd == "elseif")
             {
                 if(arg == this.result)
