@@ -8,6 +8,7 @@ import PlayerStatus from "./PlayerStatus";
 import StaticData from "../StaticData/StaticData";
 import ObjectCreator from "../Core/ObjectCreator";
 import GameMaster from "./GameMaster";
+import Memory from "./Memory";
 
 const {ccclass, property} = cc._decorator;
 
@@ -70,6 +71,30 @@ export default class SL
         {
             console.log("[SL] move: nothing found in: " + indexX + ", " + indexY )
         }
+    }
+
+    static get(name: string, _default: any)
+    {
+        Memory.getGloble(name, _default)
+    }
+
+    static set(name: string, value: any)
+    {
+        Memory.setGloble(name, value)
+    }
+
+    static add(name: string, value: number)
+    {
+        let v = Number(Memory.getGloble(name, 0))
+        v += value
+        Memory.setGloble(name, v)
+    }
+
+    static sub(name: string, value: number)
+    {
+        let v = Number(Memory.getGloble(name, 0))
+        v -= value
+        Memory.setGloble(name, v)
     }
 
     static async selectAsync(textList: string[]): Promise<string>

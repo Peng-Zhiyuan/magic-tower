@@ -80,6 +80,20 @@ export default class InlineScriptExecutor
                 let borinPoint = argParts[1]
                 await SL.changeMapAsync(name, borinPoint)
             }
+            else if(cmd == "get")
+            {
+                let argParts = arg.split(",")
+                let name = argParts[0]
+                let _default = argParts[1]
+                return SL.get(name, _default)
+            }
+            else if(cmd == "set")
+            {
+                let argParts = arg.split(",")
+                let name = argParts[0]
+                let value = argParts[1]
+                SL.set(name, value)
+            }
             else if(cmd == "if" || cmd == "elseif")
             {
                 if(arg == this.result)
