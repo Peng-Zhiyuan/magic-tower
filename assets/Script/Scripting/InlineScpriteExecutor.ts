@@ -221,6 +221,10 @@ export default class InlineScriptExecutor
                     }
                 }
             }
+            else if(cmd == "echo")
+            {
+                this.result == arg
+            }
             else if(cmd == "if" || cmd == "elseif")
             {
                 if(arg == this.result)
