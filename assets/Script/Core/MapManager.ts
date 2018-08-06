@@ -169,7 +169,7 @@ export default class MapManager
                         console.warn("tile object info not font a map object to attach: (" + indexX + ", " + indexY + ")")
                     }
                 }
-                else if(type == "born_point")
+                else if(type == "born-point")
                 {
                     let name = property["name"]
                     let location = new BoardLocation()
