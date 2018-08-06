@@ -250,6 +250,7 @@
             <key type="filename">tiles/164.png</key>
             <key type="filename">tiles/165.png</key>
             <key type="filename">tiles/166.png</key>
+            <key type="filename">tiles/167.png</key>
             <key type="filename">tiles/17.png</key>
             <key type="filename">tiles/18.png</key>
             <key type="filename">tiles/19.png</key>
