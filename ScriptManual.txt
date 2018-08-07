@@ -1,0 +1,17 @@
+dialog msg 对话框
+select a,b.. 选择框，输出玩家选择项目
+add-exp val 增加经验
+add-gold val 增加金币
+destroy x,y 摧毁cha层对象
+create name,x,y 创造cha层对象
+move x,y,targex,targetY 移动cha层对象
+sleep seconds 脚本延时
+change-map name,born-point 切换地图并在指定出生点创造玩家
+set name,val 设置全局变量
+add name,val 全局变量加法
+sub name,val 全局变量减法
+call name 调用Script.ts中的TS方法
+juge a [运算符] b 数学值比较，产生输出yes活no
+echo a 原样输出a
+move-player x,y 移动玩家到目标位置
+if .. elseif .. else .. end 判断输出并条件分支
