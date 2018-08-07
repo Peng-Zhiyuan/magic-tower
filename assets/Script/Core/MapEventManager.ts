@@ -1,4 +1,4 @@
-import MapEvent from "./MapEvent";
+import MapEvent, { EventOwner } from "./MapEvent";
 import InlineScriptExecutor from "../Scripting/InlineScpriteExecutor";
 import ScriptManager from "../Scripting/ScriptManager";
 
@@ -6,14 +6,14 @@ export default class MapEventManager
 {
     static idDic: {[id: string]: MapEvent}
     static nameDic: {[name: string]: MapEvent}
-    static indexDic: MapEvent[][] = []
+    static boardIndexDic: MapEvent[][] = []
     static list: MapEvent[] = []
 
     static reset()
     {
         this.idDic = {}
         this.nameDic = {}
-        this.indexDic = []
+        this.boardIndexDic = []
         this.list = []
     }
 
@@ -22,23 +22,26 @@ export default class MapEventManager
         this.list.push(event)
         this.nameDic[event.name] = event
         this.idDic[event.id] = event
-        this.setToIndexDic(event.indexX, event.indexY, event)
+        if(event.owner == EventOwner.Board)
+        {
+            this.setToIndexDic(event.indexX, event.indexY, event)
+        }
     }
 
     private static setToIndexDic(indexX: number, indexY: number, event: MapEvent)
     {
-        let a = this.indexDic[indexX]
+        let a = this.boardIndexDic[indexX]
         if(a == null)
         {
             a = []
-            this.indexDic[indexX] = a
+            this.boardIndexDic[indexX] = a
         }
         a[indexY] = event
     }
 
     public static getFromIndexDic(indexX: number, indexY: number)
     {
-        let a = this.indexDic[indexX]
+        let a = this.boardIndexDic[indexX]
         if(a == null)
         {
             return null
@@ -51,7 +54,7 @@ export default class MapEventManager
         return this.nameDic[name]
     }
 
-    private static triggerEvent(event: MapEvent, force: boolean = false)
+    public static trigger(event: MapEvent, force: boolean = false)
     {
         if(!force && event.forbid)
         {
@@ -71,7 +74,7 @@ export default class MapEventManager
         }
         else
         {
-            this.triggerEvent(event, force)
+            this.trigger(event, force)
         }
     }
 
@@ -84,7 +87,7 @@ export default class MapEventManager
         }
         else
         {
-            this.triggerEvent(event, force)
+            this.trigger(event, force)
         }
     }
 }

@@ -377,66 +377,81 @@ export default class GameMaster
         let targetToken = MapManager.player.token.cell.layer.getToken(targetX, targetY)
         if(targetToken != null)
         {
+            // 当移动的目标有对象存在时
             let obj = targetToken.obj
-            if(obj.type == ObjType.Monster)
+
+            // 检查对象是否存在可用事件
+            if(obj.event != null && !obj.event.forbid)
             {
-                // battle
-                console.log("BATTLE!")
-                GameMaster.OnBattle(MapManager.player, obj as Monster)
+                // 如果有则总是触发事件
+                MapEventManager.trigger(obj.event)
             }
-            else if(obj.type == ObjType.Specail)
+            else
             {
-                // TODO: ...
-                let row = StaticData.getRow(Sheet.Specail, obj.objName)
-                //let change_map = row["change_map"] as string
-                let dec_item_to_destroy = row["dec_item_to_destroy"] as string
-
-                if(dec_item_to_destroy != "")
+                // 如果没有
+                
+                // 如果是怪兽则战斗
+                if(obj.type == ObjType.Monster)
                 {
-                    let list = dec_item_to_destroy.split(",")
-                    let enouph = PlayerStatus.isKeyEnouph(list)
-                    let occu = PlayerStatus.occupation
-                    if(enouph || occu == Occupation.Thief)
+                    // battle
+                    console.log("BATTLE!")
+                    GameMaster.OnBattle(MapManager.player, obj as Monster)
+                }
+                else if(obj.type == ObjType.Specail)
+                {
+                    // TODO: ...
+                    let row = StaticData.getRow(Sheet.Specail, obj.objName)
+                    //let change_map = row["change_map"] as string
+                    let dec_item_to_destroy = row["dec_item_to_destroy"] as string
+    
+                    if(dec_item_to_destroy != "")
                     {
-                        // dec keys
-                        if(occu != Occupation.Thief)
+                        let list = dec_item_to_destroy.split(",")
+                        let enouph = PlayerStatus.isKeyEnouph(list)
+                        let occu = PlayerStatus.occupation
+                        if(enouph || occu == Occupation.Thief)
                         {
-                            PlayerStatus.decKey(list)
+                            // dec keys
+                            if(occu != Occupation.Thief)
+                            {
+                                PlayerStatus.decKey(list)
+                            }
+    
+                            // remove door
+                            obj.memoryDestory()
+                            obj.token.pick()
+                            obj.node.destroy()
+    
+                            // node player
+                            MapManager.player.token.cell.layer.pickAndSet(targetX, targetY, MapManager.player.token)
+                            let pos = MapManager.player.layer.getPositionAt(targetX, targetY)
+                            MapManager.player.node.setPosition(pos)
                         }
-
-                        // remove door
-                        obj.memoryDestory()
-                        obj.token.pick()
-                        obj.node.destroy()
-
-                        // node player
-                        MapManager.player.token.cell.layer.pickAndSet(targetX, targetY, MapManager.player.token)
-                        let pos = MapManager.player.layer.getPositionAt(targetX, targetY)
-                        MapManager.player.node.setPosition(pos)
+                        else
+                        {
+                            // do nothing
+                        }
+                    }
+    
+                }
+                else if(obj.type == ObjType.Npc)
+                {
+                    let script = obj.property["_script"]
+                    if(script != null)
+                    {
+                        ScriptManager.runNpcScript(obj as any as Npc, script)
                     }
                     else
                     {
-                        // do nothing
+                        console.warn("no _script set!")
                     }
                 }
+                else if(obj.type == ObjType.Item)
+                {
+                    GameMaster.OnPickItem(MapManager.player, obj as Item)
+                }
+            }
 
-            }
-            else if(obj.type == ObjType.Npc)
-            {
-                let script = obj.property["_script"]
-                if(script != null)
-                {
-                    ScriptManager.runNpcScript(obj as any as Npc, script)
-                }
-                else
-                {
-                    console.warn("no _script set!")
-                }
-            }
-            else if(obj.type == ObjType.Item)
-            {
-                GameMaster.OnPickItem(MapManager.player, obj as Item)
-            }
         }
         else
         {

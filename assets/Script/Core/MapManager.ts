@@ -6,7 +6,7 @@ import MapObject from "./MapObject";
 import BoardIndex from "./BoardLocation";
 import BoardLocation from "./BoardLocation";
 import Player from "./Player";
-import MapEvent from "./MapEvent";
+import MapEvent, { EventOwner } from "./MapEvent";
 import EventManager from "./MapEventManager";
 import MapEventManager from "./MapEventManager";
 import SpriteLibrary from "./SpriteLibrary";
@@ -162,6 +162,7 @@ export default class MapManager
                 {
                     type = property["type"]
                 }
+                /*
                 if(type == "obj")
                 {
                     // 这个信息是需要附加到一个对象上的
@@ -185,17 +186,36 @@ export default class MapManager
                         console.warn("tile object info not font a map object to attach: (" + indexX + ", " + indexY + ")")
                     }
                 }
-                else if(type == "event")
+                else 
+                */
+                if(type == "event")
                 {
+                    // 生成一个事件
                     let name = property["name"]
                     let script = property["_script"]
+                    let repeat = Boolean(property["repeat"])
                     let event = new MapEvent()
                     event.id = name
                     event.name = name
                     event.script = script
-                    event.indexX = indexX
-                    event.indexY = indexY
+                    event.repeat = repeat
                     event.rawProperty = property
+                    // 检查是否附着在对象上
+                    let token = Board.get("cha", indexX, indexY)
+                    if(token != null)
+                    {
+                        // 事件在对象上
+                        event.owner = EventOwner.Obj
+                        token.obj.event = event
+                        event.obj = token.obj
+                    }
+                    else
+                    {
+                        // 事件在棋盘上
+                        event.owner = EventOwner.Board
+                        event.indexX = indexX
+                        event.indexY = indexY
+                    }
                     EventManager.Add(event)
                 }
 

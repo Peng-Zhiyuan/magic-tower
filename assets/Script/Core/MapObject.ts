@@ -1,5 +1,6 @@
 import Token from "./Token";
 import { ObjType } from "./ObjType";
+import MapEvent from "./MapEvent";
 
 const {ccclass, property} = cc._decorator;
 
@@ -12,6 +13,7 @@ export default class MapObject extends cc.Component
     type: ObjType
     layer: cc.TiledLayer
     property: object
+    event: MapEvent
 
     generateToken(tag: string)
     {

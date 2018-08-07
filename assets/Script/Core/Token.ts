@@ -1,6 +1,7 @@
 import BoardCell from "./BoardCell";
 import MapObject from "./MapObject";
 import { ObjType } from "./ObjType";
+import MapEvent from "./MapEvent";
 
 export default class Token
 {
