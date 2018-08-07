@@ -30,4 +30,9 @@ export default class MapObject extends cc.Component
 
     }
 
+    setImage(image: cc.SpriteFrame[])
+    {
+
+    }
+
 }

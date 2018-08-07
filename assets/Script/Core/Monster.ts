@@ -70,5 +70,7 @@ export default class Monster extends MapObject
     {
         this.state.node.active = b
     }
+
+
     
 }

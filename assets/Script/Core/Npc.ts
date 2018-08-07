@@ -45,4 +45,9 @@ export default class Npc extends MapObject
         this.setSpriteByIndex(this.currentIndex)
     }
     
+    setImage(imageList: cc.SpriteFrame[])
+    {
+        this.sprtieFrameList = []
+        this.sprtieFrameList = this.sprtieFrameList.concat(imageList)
+    }
 }

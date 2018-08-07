@@ -9,6 +9,7 @@ import Player from "./Player";
 import MapEvent from "./MapEvent";
 import EventManager from "./MapEventManager";
 import MapEventManager from "./MapEventManager";
+import SpriteLibrary from "./SpriteLibrary";
 
 
 export default class MapManager
@@ -172,7 +173,15 @@ export default class MapManager
                     let token = Board.get("cha", indexX, indexY)
                     if(token != null)
                     {
-                        let property = infoObj["_properties"]
+                        // 化妆处理
+                        let image = property["image"]
+                        if(image != null && image != "")
+                        {
+                            let sprite = SpriteLibrary.get(image)
+                            let sprietList = [sprite]
+                            token.obj.setImage(sprietList)
+                        }
+                      
                         token.obj.property = property
                         console.log("attach " + JSON.stringify(property) + " to " + token.obj.objName)
                     }
