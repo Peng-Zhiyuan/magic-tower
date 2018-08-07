@@ -19,6 +19,7 @@ import Npc from "../Core/Npc";
 import InlineScriptExecutor from "../Scripting/InlineScpriteExecutor";
 import GameManifest from "../../Subsystems/-GameManifest/GameManifest";
 import MapEventManager from "../Core/MapEventManager";
+import MapEvent from "../Core/MapEvent";
 
 const {ccclass, property} = cc._decorator;
 
@@ -446,9 +447,8 @@ export default class GameMaster
             {
                 if(!event.forbid)
                 {
-                    let script = event.script
-                    InlineScriptExecutor.executeAsync(script)
                     event.setAndMemoryForbid(true)
+                    MapEventManager.triggerByIndex(targetX, targetY)
                 }
             }
         }

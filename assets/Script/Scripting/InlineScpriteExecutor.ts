@@ -232,6 +232,11 @@ export default class InlineScriptExecutor
                 let y = Number(argParts[1])
                 SL.movePlayer(x, y)
             }
+            else if(cmd == "trigger")
+            {
+                let name = arg
+                SL.trigger(name)
+            }
             else if(cmd == "if" || cmd == "elseif")
             {
                 if(arg == this.result)

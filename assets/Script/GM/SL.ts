@@ -10,6 +10,7 @@ import ObjectCreator from "../Core/ObjectCreator";
 import GameMaster from "./GameMaster";
 import Memory from "./Memory";
 import MapHelper from "../Core/MapHelper";
+import MapEventManager from "../Core/MapEventManager";
 
 const {ccclass, property} = cc._decorator;
 
@@ -142,6 +143,11 @@ export default class SL
         }
         // 把玩家移动到这个位置
         MapManager.moveObject(MapManager.player, indexX, indexY)
+    }
+
+    static trigger(name: string)
+    {
+        MapEventManager.triggerByName(name)
     }
   
 }
