@@ -15,3 +15,6 @@ juge a [运算符] b 数学值比较，产生输出yes活no
 echo a 原样输出a
 move-player x,y 移动玩家到目标位置
 if .. elseif .. else .. end 判断输出并条件分支
+trigger name 触发event
+force-trigger name 强制触发event，即时该event已被禁止
+relive 允许当前event可再次被执行，仅在event的脚本中有效
