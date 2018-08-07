@@ -225,6 +225,13 @@ export default class InlineScriptExecutor
             {
                 this.result = arg
             }
+            else if(cmd == "move-player")
+            {
+                let argParts = arg.split(",")
+                let x = Number(argParts[0])
+                let y = Number(argParts[1])
+                SL.movePlayer(x, y)
+            }
             else if(cmd == "if" || cmd == "elseif")
             {
                 if(arg == this.result)

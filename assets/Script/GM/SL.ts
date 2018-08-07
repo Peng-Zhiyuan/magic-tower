@@ -9,6 +9,7 @@ import StaticData from "../StaticData/StaticData";
 import ObjectCreator from "../Core/ObjectCreator";
 import GameMaster from "./GameMaster";
 import Memory from "./Memory";
+import MapHelper from "../Core/MapHelper";
 
 const {ccclass, property} = cc._decorator;
 
@@ -128,6 +129,19 @@ export default class SL
             }
         }
         return ret
+    }
+
+    static movePlayer(indexX: number, indexY: number)
+    {
+        // 如果目标位置有对象，则永久摧毁这个对象
+        let token = Board.get("cha", indexX, indexY)
+        if(token != null)
+        {
+            let obj = token.obj
+            MapHelper.destoryObj(obj)
+        }
+        // 把玩家移动到这个位置
+        MapManager.moveObject(MapManager.player, indexX, indexY)
     }
   
 }
