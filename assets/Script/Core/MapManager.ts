@@ -120,25 +120,23 @@ export default class MapManager
 
     private static parseObject()
     {
-        let layerList = this.map.allLayers()
-        for(let layer of layerList)
+        let layer = this.map.getLayer("cha")
+        let size = layer.getLayerSize()
+        for(let i = 0; i < size.width; i++)
         {
-            let size = layer.getLayerSize()
-            for(let i = 0; i < size.width; i++)
+            for(let j = 0; j < size.height; j++)
             {
-                for(let j = 0; j < size.height; j++)
+                let gid = layer.getTileGIDAt(i, j)
+                let parseInfo = ObjectCreator.GIDToParseInfo(gid)
+                if(parseInfo != null)
                 {
-                    let gid = layer.getTileGIDAt(i, j)
-                    let parseInfo = ObjectCreator.GIDToParseInfo(gid)
-                    if(parseInfo != null)
-                    {
-                        console.log("(" + i + ", " + j + ") parse to " + parseInfo.objType + ": " + parseInfo.objName)
-                        layer.setTileGID(0, i, j)
-                        this.createObjByParseInfo(layer, i, j, parseInfo)
-                    }
+                    console.log("(" + i + ", " + j + ") parse to " + parseInfo.objType + ": " + parseInfo.objName)
+                    
+                    this.createObjByParseInfo(layer, i, j, parseInfo)
                 }
+                layer.setTileGID(0, i, j)
             }
-        } 
+        }
     }
 
     private static parseInfo()
