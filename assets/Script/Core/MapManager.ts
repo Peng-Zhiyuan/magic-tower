@@ -10,6 +10,7 @@ import MapEvent from "./MapEvent";
 import EventManager from "./MapEventManager";
 import MapEventManager from "./MapEventManager";
 import SpriteLibrary from "./SpriteLibrary";
+import MapHelper from "./MapHelper";
 
 
 export default class MapManager
@@ -18,7 +19,6 @@ export default class MapManager
     static layerToObjectRoot: {[name: string]: cc.Node}
     static upBorn: BoardIndex = new BoardLocation()
     static downBorn: BoardIndex = new BoardLocation()
-    static bornPoint: {[name: string]: BoardLocation}
     static player: Player
 
     static init()
@@ -26,7 +26,7 @@ export default class MapManager
         this.map = cc.find("Canvas/map").getComponent(cc.TiledMap)
     }
 
-    static async loadAsync(mapPath: string, bornPointName: string)
+    static async loadAsync(mapPath: string, indexX: number, indexY: number)
     {
         // log
         console.log("[MapManager] load " + mapPath)
@@ -46,8 +46,6 @@ export default class MapManager
         // reset map event
         MapEventManager.reset()
 
-        // reset born-point info
-        this.bornPoint = {}
 
         // set map component
         let mapAsset = await ResUtil.loadRes<cc.TiledMapAsset>(mapPath)
@@ -102,16 +100,13 @@ export default class MapManager
         Board.print()
 
         // create player
-        let bornPoint = this.bornPoint[bornPointName]
-        if(bornPoint == null)
+        let token = Board.get("cha", indexX, indexY)
+        if(token != null)
         {
-            console.warn("born-point " + bornPointName + " not found in map " + mapPath + ", not create player.")
+            MapManager.removeObject(token.obj)
         }
-        else
-        {
-            let layer = this.map.getLayer("cha")
-            this.player = this.createPlayer(layer, bornPoint.indexX, bornPoint.indexY)
-        }
+        let layer = this.map.getLayer("cha")
+        this.player = this.createPlayer(layer, indexX, indexY)
     }
 
     private static addObj(layer: cc.TiledLayer, indexX: number, indexY: number, obj: cc.Node)
@@ -189,14 +184,6 @@ export default class MapManager
                     {
                         console.warn("tile object info not font a map object to attach: (" + indexX + ", " + indexY + ")")
                     }
-                }
-                else if(type == "born-point")
-                {
-                    let name = property["name"]
-                    let location = new BoardLocation()
-                    location.indexX = indexX
-                    location.indexY = indexY
-                    this.bornPoint[name] = location
                 }
                 else if(type == "event")
                 {

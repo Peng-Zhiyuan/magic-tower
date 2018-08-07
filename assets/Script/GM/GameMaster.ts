@@ -171,12 +171,12 @@ export default class GameMaster
 
     static currentMap: string
 
-    static async loadMap(map: string, bornPointName: string)
+    static async loadMap(map: string, x: number, y: number)
     {
         this.currentMap = map
         console.log("[GameMaster] load map " + map)
         let path = "map/" + map;
-        await MapManager.loadAsync(path, bornPointName)
+        await MapManager.loadAsync(path, x, y)
     }
 
     static OnPickItem(player: Player, item: Item)
@@ -218,9 +218,10 @@ export default class GameMaster
         this.inBattle = false
         Memory.reset()
         PlayerStatus.reset()
-        let mainMap = GameManifest.get("main-map");
-        let bornPoint = GameManifest.get("main-map-born-point");
-        this.loadMap(mainMap, bornPoint)
+        let mainMap = GameManifest.get("main-map")
+        let x = Number(GameManifest.get("main-x"))
+        let y = Number(GameManifest.get("main-y"))
+        this.loadMap(mainMap, x, y)
     }
     
     static refreshMonsterState()

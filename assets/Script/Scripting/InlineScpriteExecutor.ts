@@ -104,8 +104,9 @@ export default class InlineScriptExecutor
             {
                 let argParts = arg.split(",")
                 let name = argParts[0]
-                let borinPoint = argParts[1]
-                await SL.changeMapAsync(name, borinPoint)
+                let x = Number(argParts[1])
+                let y = Number(argParts[2])
+                await SL.changeMapAsync(name, x, y)
             }
             else if(cmd == "get")
             {

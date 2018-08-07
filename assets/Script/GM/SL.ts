@@ -34,9 +34,9 @@ export default class SL
         PlayerStatus.exp += value
     }
 
-    static async changeMapAsync(name: string, bornPointName: string)
+    static async changeMapAsync(name: string, x: number, y: number)
     {
-        await GameMaster.loadMap(name, bornPointName)
+        await GameMaster.loadMap(name, x, y)
     }
 
     // 摧毁指定坐标的对象

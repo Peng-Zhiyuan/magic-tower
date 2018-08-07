@@ -1,4 +1,5 @@
 {
     "main-map": "test",
-    "main-map-born-point": "default"
+    "main-x": "5",
+    "main-y": "5"
 }
