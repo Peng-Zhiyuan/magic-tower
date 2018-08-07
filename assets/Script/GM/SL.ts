@@ -11,6 +11,7 @@ import GameMaster from "./GameMaster";
 import Memory from "./Memory";
 import MapHelper from "../Core/MapHelper";
 import MapEventManager from "../Core/MapEventManager";
+import ScriptManager from "../Scripting/ScriptManager";
 
 const {ccclass, property} = cc._decorator;
 
@@ -145,9 +146,19 @@ export default class SL
         MapManager.moveObject(MapManager.player, indexX, indexY)
     }
 
-    static trigger(name: string)
+    static trigger(name: string, force: boolean = false)
     {
-        MapEventManager.triggerByName(name)
+        MapEventManager.triggerByName(name, force)
     }
+
+    static relive()
+    {
+        let event = ScriptManager.event
+        if(event != null)
+        {
+            event.forbid = false
+        }
+    }
+
   
 }

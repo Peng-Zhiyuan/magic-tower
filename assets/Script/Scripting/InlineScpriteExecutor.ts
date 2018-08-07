@@ -235,7 +235,16 @@ export default class InlineScriptExecutor
             else if(cmd == "trigger")
             {
                 let name = arg
-                SL.trigger(name)
+                SL.trigger(name, false)
+            }
+            else if(cmd == "force-trigger")
+            {
+                let name = arg
+                SL.trigger(name, true)
+            }
+            else if(cmd == "relive")
+            {
+                SL.relive()
             }
             else if(cmd == "if" || cmd == "elseif")
             {

@@ -425,7 +425,7 @@ export default class GameMaster
                 let script = obj.property["_script"]
                 if(script != null)
                 {
-                    ScriptManager.runInlineScript(obj as any as Npc, script)
+                    ScriptManager.runNpcScript(obj as any as Npc, script)
                 }
                 else
                 {
@@ -445,11 +445,7 @@ export default class GameMaster
             let event = MapEventManager.getFromIndexDic(targetX, targetY)
             if(event != null)
             {
-                if(!event.forbid)
-                {
-                    event.setAndMemoryForbid(true)
-                    MapEventManager.triggerByIndex(targetX, targetY)
-                }
+                MapEventManager.triggerByIndex(targetX, targetY)
             }
         }
     }  

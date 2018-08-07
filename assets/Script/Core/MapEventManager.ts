@@ -1,5 +1,6 @@
 import MapEvent from "./MapEvent";
 import InlineScriptExecutor from "../Scripting/InlineScpriteExecutor";
+import ScriptManager from "../Scripting/ScriptManager";
 
 export default class MapEventManager
 {
@@ -45,13 +46,23 @@ export default class MapEventManager
         return a[indexY]
     }
 
-    private static triggerEvent(event: MapEvent)
+    public static getByName(name: string)
     {
-        let script = event.script
-        InlineScriptExecutor.executeAsync(script)
+        return this.nameDic[name]
     }
 
-    public static triggerByName(name: string)
+    private static triggerEvent(event: MapEvent, force: boolean = false)
+    {
+        if(!force && event.forbid)
+        {
+            return
+        }
+        event.forbid = true
+        let script = event.script
+        ScriptManager.runEventScript(event, script)
+    }
+
+    public static triggerByName(name: string, force: boolean = false)
     {
         let event = this.nameDic[name]
         if(event == null)
@@ -60,11 +71,11 @@ export default class MapEventManager
         }
         else
         {
-            this.triggerEvent(event)
+            this.triggerEvent(event, force)
         }
     }
 
-    public static triggerByIndex(indexX: number, indexY: number)
+    public static triggerByIndex(indexX: number, indexY: number, force: boolean = false)
     {
         let event = this.getFromIndexDic(indexX, indexY)
         if(event == null)
@@ -73,7 +84,7 @@ export default class MapEventManager
         }
         else
         {
-            this.triggerEvent(event)
+            this.triggerEvent(event, force)
         }
     }
 }
