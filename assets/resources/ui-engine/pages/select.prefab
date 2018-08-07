@@ -685,7 +685,7 @@
     },
     "_children": [],
     "_tag": -1,
-    "_active": false,
+    "_active": true,
     "_components": [
       {
         "__id__": 19
@@ -743,7 +743,7 @@
     "node": {
       "__id__": 18
     },
-    "_enabled": true,
+    "_enabled": false,
     "_spriteFrame": {
       "__uuid__": "5c119f7d-a878-491e-beee-2beb2fadd84d"
     },

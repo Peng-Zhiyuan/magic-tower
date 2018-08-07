@@ -60,7 +60,10 @@ export default class MapEventManager
         {
             return
         }
-        event.forbid = true
+        if(!event.repeat)
+        {
+            event.forbid = true
+        }
         let script = event.script
         ScriptManager.runEventScript(event, script)
     }

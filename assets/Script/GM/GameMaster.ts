@@ -389,7 +389,7 @@ export default class GameMaster
             else
             {
                 // 如果没有
-                
+
                 // 如果是怪兽则战斗
                 if(obj.type == ObjType.Monster)
                 {

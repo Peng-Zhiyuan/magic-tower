@@ -66,6 +66,7 @@ create bat,1,1</property>
   <object id="7" name="event" x="143" y="239">
    <properties>
     <property name="_script" value="select a,b,c,d"/>
+    <property name="repeat" type="bool" value="true"/>
     <property name="script" value="select a"/>
     <property name="type" value="event"/>
    </properties>
