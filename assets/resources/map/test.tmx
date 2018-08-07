@@ -1,8 +1,8 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <map version="1.0" tiledversion="2018.06.01" orientation="orthogonal" renderorder="right-down" width="9" height="16" tilewidth="32" tileheight="32" infinite="0" nextlayerid="4" nextobjectid="9">
- <tileset firstgid="1" source="Tile.tsx"/>
- <layer id="1" name="terrian" width="9" height="16">
-  <data encoding="csv">
+  <tileset firstgid="1" source="Tile.tsx" />
+  <layer id="1" name="terrian" width="9" height="16">
+    <data encoding="csv">
 32,32,32,32,32,32,32,32,32,
 32,32,32,32,32,32,32,32,32,
 32,32,32,32,32,32,32,32,32,
@@ -20,9 +20,9 @@
 32,32,32,32,32,32,32,32,32,
 32,32,32,32,32,32,32,32,32
 </data>
- </layer>
- <layer id="2" name="cha" width="9" height="16">
-  <data encoding="csv">
+  </layer>
+  <layer id="2" name="cha" width="9" height="16">
+    <data encoding="csv">
 0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,
@@ -40,40 +40,39 @@
 0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0
 </data>
- </layer>
- <objectgroup id="3" name="info">
-  <properties>
-   <property name="_script" value="dialog dialog"/>
-   <property name="script" value="dialog dialog"/>
-   <property name="t" value="obj"/>
-  </properties>
-  <object id="1" x="112" y="491">
-   <properties>
-    <property name="name" value="default"/>
-    <property name="type" value="born-point"/>
-   </properties>
-   <point/>
-  </object>
-  <object id="6" x="110.667" y="300">
-   <properties>
-    <property name="_script" value="dialog test test\ncreate bat,1,1"/>
-    <property name="is">dialog test test
+  </layer>
+  <objectgroup id="3" name="info">
+    <properties>
+      <property name="_script" value="dialog dialog" />
+      <property name="script" value="dialog dialog" />
+      <property name="t" value="obj" />
+    </properties>
+    <object id="1" x="112" y="491">
+      <properties>
+        <property name="name" value="default" />
+        <property name="type" value="born-point" />
+      </properties>
+      <point />
+    </object>
+    <object id="6" x="110.667" y="300">
+      <properties>
+        <property name="_script" value="dialog test test\ncreate bat,1,1" />
+        <property name="is">dialog test test
 create bat,1,1</property>
-    <property name="t" value="obj"/>
-   </properties>
-   <point/>
-  </object>
-  <object id="7" name="event" x="146" y="241">
-   <properties>
-    <property name="_script" value="set a,aaa\ndialog ${a}\ndialog dialog"/>
-    <property name="script">dialog ${a}
-dialog dialog</property>
-    <property name="type" value="event"/>
-   </properties>
-   <point/>
-  </object>
-  <object id="8" x="379" y="409">
-   <point/>
-  </object>
- </objectgroup>
+        <property name="t" value="obj" />
+      </properties>
+      <point />
+    </object>
+    <object id="7" name="event" x="146" y="241">
+      <properties>
+        <property name="_script" value="select a" />
+        <property name="script" value="select a" />
+        <property name="type" value="event" />
+      </properties>
+      <point />
+    </object>
+    <object id="8" x="379" y="409">
+      <point />
+    </object>
+  </objectgroup>
 </map>
