@@ -28,4 +28,14 @@ export default class SpriteLibrary
     {
         return this.mapping[name]
     }
+
+    static getList(nameList: string[]): cc.SpriteFrame[]
+    {
+        let ret = []
+        for (let name of nameList) {
+            let res = this.get(name)
+            ret.push(ret)
+        }
+        return ret
+    }
 }

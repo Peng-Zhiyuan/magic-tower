@@ -436,15 +436,7 @@ export default class GameMaster
                 }
                 else if(obj.type == ObjType.Npc)
                 {
-                    let script = obj.property["_script"]
-                    if(script != null)
-                    {
-                        ScriptManager.runNpcScript(obj as any as Npc, script)
-                    }
-                    else
-                    {
-                        console.warn("no _script set!")
-                    }
+                    console.warn("no non-forbiden event attached!")
                 }
                 else if(obj.type == ObjType.Item)
                 {
