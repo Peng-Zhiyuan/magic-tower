@@ -11,14 +11,15 @@ import EventManager from "./MapEventManager";
 import MapEventManager from "./MapEventManager";
 import SpriteLibrary from "./SpriteLibrary";
 import MapHelper from "./MapHelper";
+import MpaLibrary from "./MapLibrary";
+import MapManagerData from "./MapManagerPatch";
+import MapManagerPatch from "./MapManagerPatch";
 
 
 export default class MapManager
 {
     static map: cc.TiledMap
     static layerToObjectRoot: {[name: string]: cc.Node}
-    static upBorn: BoardIndex = new BoardLocation()
-    static downBorn: BoardIndex = new BoardLocation()
     static player: Player
 
     static init()
@@ -26,10 +27,20 @@ export default class MapManager
         this.map = cc.find("Canvas/map").getComponent(cc.TiledMap)
     }
 
-    static async loadAsync(mapPath: string, indexX: number, indexY: number)
+    static createPatch()
+    {
+        let data = new MapManagerPatch()
+        data.playerLocation = new BoardLocation()
+        data.playerLocation.indexX = this.player.token.cell.indexX
+        data.playerLocation.indexY = this.player.token.cell.indexY
+        return data
+    }
+
+
+    static load(mapName: string, indexX: number, indexY: number)
     {
         // log
-        console.log("[MapManager] load " + mapPath)
+        console.log("[MapManager] load " + mapName)
 
         // clean
         Board.eachToken(token => {
@@ -48,7 +59,8 @@ export default class MapManager
 
 
         // set map component
-        let mapAsset = await ResUtil.loadRes<cc.TiledMapAsset>(mapPath)
+        let mapAsset = MpaLibrary.get(mapName)
+        this.map.tmxAsset = MpaLibrary.get("map1")
         this.map.tmxAsset = mapAsset
 
         // create objRoot of each layers
@@ -57,7 +69,7 @@ export default class MapManager
         for(let index in layerList)
         {
             let layer = layerList[index]
-            let name = layer.name
+            let name = layer.getLayerName()
             let objRoot = new cc.Node()
             objRoot.parent = layer.node
             objRoot.position = cc.Vec2.ZERO
@@ -111,7 +123,7 @@ export default class MapManager
 
     private static addObj(layer: cc.TiledLayer, indexX: number, indexY: number, obj: cc.Node)
     {
-        let objRoot = this.layerToObjectRoot[layer.name]
+        let objRoot = this.layerToObjectRoot[layer.getLayerName()]
         // 从地图左下角开始计算的本地坐标，无关map对象的anchor
         let pos = layer.getPositionAt(indexX, indexY)
         obj.parent = objRoot

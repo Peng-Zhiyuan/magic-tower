@@ -20,6 +20,7 @@ import InlineScriptExecutor from "../Scripting/InlineScpriteExecutor";
 import GameManifest from "../../Subsystems/-GameManifest/GameManifest";
 import MapEventManager from "../Core/MapEventManager";
 import MapEvent from "../Core/MapEvent";
+import GameMasterPatch from "./GameMasterPatch";
 
 const {ccclass, property} = cc._decorator;
 
@@ -27,7 +28,40 @@ const {ccclass, property} = cc._decorator;
 export default class GameMaster 
 {
     static inBattle: boolean
+    static currentMap: string
 
+    static createPatch()
+    {
+        let data = new GameMasterPatch()
+        data.inBattle = this.inBattle
+        data.currentMap = this.currentMap
+        var memoryPatch = Memory.createPatch()
+        data.memoryPatch = memoryPatch
+        var playerStatusPatch = PlayerStatus.createPatch()
+        data.playerStatusPatch = playerStatusPatch
+        var mapPatch = MapManager.createPatch()
+        data.mapManagerPatch = mapPatch
+        return data
+    }
+
+    static applyPatch(p: GameMasterPatch)
+    {
+        // patch memory
+        Memory.applyPatch(p.memoryPatch)
+
+        // patch player satus
+        PlayerStatus.applayPatch(p.playerStatusPatch)
+
+        // patch map manager
+        let map = p.currentMap
+        let playerX = p.mapManagerPatch.playerLocation.indexX
+        let plaeyrY = p.mapManagerPatch.playerLocation.indexY
+        this.loadMap(map, playerX, plaeyrY)
+
+        // patch game master
+        this.inBattle = p.inBattle
+        this.currentMap = p.currentMap
+    }
 
     static OnBattle(player: Player, monster: Monster)
     {
@@ -169,14 +203,13 @@ export default class GameMaster
         this.refreshMonsterState()
     }
 
-    static currentMap: string
 
-    static async loadMap(map: string, x: number, y: number)
+
+    static loadMap(map: string, x: number, y: number)
     {
-        this.currentMap = map
         console.log("[GameMaster] load map " + map)
-        let path = "map/" + map;
-        await MapManager.loadAsync(path, x, y)
+        this.currentMap = map
+        MapManager.load(map, x, y)
     }
 
     static OnPickItem(player: Player, item: Item)

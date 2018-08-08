@@ -1,10 +1,25 @@
 import GameMaster from "./GameMaster";
 import MapMemory from "./MapMemory";
+import MemoryPatch from "./MemoryPatch";
 
 export default class Memory
 {
     static mapMemoryDic: {[mapName: string]: MapMemory} = {}
     static globleMemory = {}
+
+    static createPatch()
+    {
+        let patch = new MemoryPatch()
+        patch.mapMemoryDic = this.mapMemoryDic
+        patch.globleMemory = this.globleMemory
+        return patch
+    }
+
+    static applyPatch(p: MemoryPatch)
+    {
+        this.mapMemoryDic = p.mapMemoryDic
+        this.globleMemory = p.globleMemory
+    }
 
     static getObj(mapName: string, objId: string, key: string, _default: any)
     {

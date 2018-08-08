@@ -1,6 +1,7 @@
 import { Occupation } from "./Occupation";
 import { KeyType } from "./KeyType";
 import StaticData from "../StaticData/StaticData";
+import PlayerStatusPatch from "./PlayerStatusPatch";
 
 export default class PlayerStatus
 {
@@ -15,6 +16,38 @@ export default class PlayerStatus
     static exp: number = 0
     static level: number = 0
     static gold: number = 0
+
+    static createPatch()
+    {
+        let p = new PlayerStatusPatch()
+        p.occupation = this.occupation
+        p.hp = this.hp
+        p.atk = this.atk
+        p.def = this.def
+        p.cert = this.cert
+        p.key_yellow = this.key_yellow
+        p.key_blue = this.key_blue
+        p.key_red = this.key_red
+        p.exp = this.exp
+        p.level = this.level
+        p.gold = this.gold
+        return p
+    }
+
+    static applayPatch(p: PlayerStatusPatch)
+    {
+        this.occupation = p.occupation
+        this.hp = p.hp
+        this.atk = p.atk
+        this.def = p.def
+        this.cert = p.cert
+        this.key_yellow = p.key_yellow
+        this.key_blue = p.key_blue
+        this.key_red = p.key_red
+        this.exp = p.exp
+        this.level = p.level
+        this.gold = p.gold
+    }
 
     static reset()
     {

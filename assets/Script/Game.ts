@@ -7,10 +7,12 @@ import StaticData from "./StaticData/StaticData";
 import SpriteLibrary from "./Core/SpriteLibrary";
 import UIEngine from "../Subsystems/-UIEngine/UIEngine";
 import TaskExecutor, { Task } from "../Subsystems/-TaskExecutor/TaskExecutor";
-import GameMaster from "./GM/GameMaster";
+import GameMaster from "./Core.GM/GameMaster";
 import UpdateManager from "../Subsystems/-BaseKit/UpdateManager";
 import Time from "../Subsystems/-BaseKit/Time";
 import GameManifest from "../Subsystems/-GameManifest/GameManifest";
+import MpaLibrary from "./Core/MapLibrary";
+import CoreLuncher from "./Game/CoreLuncher";
 
 const {ccclass, property} = cc._decorator;
 
@@ -49,14 +51,15 @@ export default class Game extends cc.Component {
             { name: "ui-engine", func: () => UIEngine.preloadResAsync()},
             { name: "static-data", func: () => StaticData.initAsync()},
             { name: "sprite-library", func: () => SpriteLibrary.initAsync()},
+            { name: "map-library", func: () => MpaLibrary.initAsync()},
             { name: "object-creator", func: () => ObjectCreator.initResAsync()},
         ]
         await TaskExecutor.all(taskList)
 
         ObjectCreator.init()
         //await MapManager.loadAsync("map/map1")
-        await GameMaster.restart()
-        UIEngine.showFloatingAsync("ControllerFloating", )
+        CoreLuncher.launch()
+        UIEngine.showFloatingAsync("ControllerFloating")
         
     }
 
